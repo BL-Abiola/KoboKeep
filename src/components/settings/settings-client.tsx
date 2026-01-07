@@ -55,13 +55,15 @@ function ProfileSettings() {
             <p className="text-sm text-muted-foreground truncate">{settings.profile.businessName}</p>
           </div>
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-            <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-            <Button type="submit" className="w-full">Save Changes</Button>
-          </form>
-        </Form>
+        <div className="w-full sm:max-w-sm">
+            <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                <Button type="submit" className="w-full">Save Changes</Button>
+            </form>
+            </Form>
+        </div>
       </CardContent>
     </Card>
   );
@@ -80,18 +82,20 @@ function CurrencySettings() {
         <CardDescription>Select your preferred currency.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
-          <SelectTrigger className="w-full sm:w-[280px]">
-            <SelectValue placeholder="Select a currency" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
-              <SelectItem key={code} value={code}>
-                {symbol} - {name} ({code})
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="w-full sm:max-w-sm">
+            <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
+            <SelectTrigger>
+                <SelectValue placeholder="Select a currency" />
+            </SelectTrigger>
+            <SelectContent>
+                {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
+                <SelectItem key={code} value={code}>
+                    {symbol} - {name} ({code})
+                </SelectItem>
+                ))}
+            </SelectContent>
+            </Select>
+        </div>
       </CardContent>
     </Card>
   );
@@ -147,7 +151,9 @@ export function SettingsClient() {
             <CardDescription>Customize the look and feel of the app.</CardDescription>
         </CardHeader>
         <CardContent>
-            <ThemeSwitcher/>
+            <div className="w-full sm:max-w-sm">
+              <ThemeSwitcher/>
+            </div>
         </CardContent>
       </Card>
       <CurrencySettings />
