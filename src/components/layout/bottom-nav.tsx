@@ -13,7 +13,7 @@ const navItems = [
   { href: '/transactions', label: 'History', icon: List },
   { href: '/debts', label: 'Debts', icon: BookUser },
   { href: '/reports', label: 'Reports', icon: BarChart3 },
-  { href: '/settings', label: 'More', icon: Settings },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export function BottomNav() {
