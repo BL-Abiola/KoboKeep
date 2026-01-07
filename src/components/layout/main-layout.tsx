@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -8,7 +9,7 @@ import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { TransactionForm } from '@/components/transactions/transaction-form';
 import { useAppStore } from '@/lib/store';
 import { Button } from '../ui/button';
-import { Info, Settings, User } from 'lucide-react';
+import { Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { AboutDialog } from './about-dialog';
@@ -59,10 +60,6 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
                 <span className="sr-only">Settings</span>
               </Button>
             </Link>
-            <Button variant="ghost" size="icon" onClick={() => setIsAboutDialogOpen(true)}>
-              <Info className="h-6 w-6" />
-              <span className="sr-only">About</span>
-            </Button>
           </div>
         </header>
       <main className="flex-1 pb-20">{children}</main>
