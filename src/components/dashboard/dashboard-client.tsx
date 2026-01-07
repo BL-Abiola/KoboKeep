@@ -52,7 +52,6 @@ export function DashboardClient() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
           <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -71,7 +70,6 @@ export function DashboardClient() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        </div>
       </div>
       
       <DailySummaryCard log={todaysLog} />
