@@ -8,7 +8,8 @@ import { StartDayDialog } from './start-day-dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { TransactionList } from '@/components/transactions/transaction-list';
 import { Sun } from 'lucide-react';
-import { DailyChart } from './daily-chart';
+import { WeeklyChart } from './weekly-chart';
+import { subDays, startOfWeek, endOfWeek } from 'date-fns';
 
 export function DashboardClient() {
   const { getTodaysLog, endDay, transactions } = useAppStore();
@@ -19,6 +20,17 @@ export function DashboardClient() {
     const transactionIds = new Set(todaysLog.transactions);
     return transactions.filter(t => transactionIds.has(t.id)).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [todaysLog, transactions]);
+
+  const weeklyTransactions = useMemo(() => {
+    const today = new Date();
+    const start = startOfWeek(today, { weekStartsOn: 1 }); // Monday
+    const end = endOfWeek(today, { weekStartsOn: 1 }); // Sunday
+    return transactions.filter(t => {
+        const transactionDate = new Date(t.date);
+        return transactionDate >= start && transactionDate <= end;
+    });
+  }, [transactions]);
+
 
   if (!todaysLog) {
     return (
@@ -64,11 +76,11 @@ export function DashboardClient() {
       
       <Card>
         <CardHeader>
-            <CardTitle className="font-headline text-xl">Daily Performance</CardTitle>
-            <CardDescription>A visual summary of today's sales and expenses.</CardDescription>
+            <CardTitle className="font-headline text-xl">Weekly Performance</CardTitle>
+            <CardDescription>A visual summary of this week's sales and expenses.</CardDescription>
         </CardHeader>
         <CardContent>
-            <DailyChart data={todaysTransactions} />
+            <WeeklyChart data={weeklyTransactions} />
         </CardContent>
       </Card>
       

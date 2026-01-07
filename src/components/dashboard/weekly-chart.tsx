@@ -5,42 +5,46 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Responsive
 import { Transaction } from '@/lib/types';
 import { useAppStore } from '@/lib/store';
 import { CURRENCIES } from '@/lib/constants';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { format } from 'date-fns';
 
-interface DailyChartProps {
+interface WeeklyChartProps {
   data: Transaction[];
 }
 
-export function DailyChart({ data }: DailyChartProps) {
+export function WeeklyChart({ data }: WeeklyChartProps) {
   const { settings } = useAppStore();
   const currencySymbol = CURRENCIES[settings.currency]?.symbol || '$';
 
   const chartData = React.useMemo(() => {
-    const hourlyData: { [hour: string]: { sales: number; expenses: number } } = {};
-
-    for (let i = 0; i < 24; i++) {
-      const hour = i.toString().padStart(2, '0') + ':00';
-      hourlyData[hour] = { sales: 0, expenses: 0 };
-    }
+    const weeklyData: { [day: string]: { sales: number; expenses: number } } = {
+        'Mon': { sales: 0, expenses: 0 },
+        'Tue': { sales: 0, expenses: 0 },
+        'Wed': { sales: 0, expenses: 0 },
+        'Thu': { sales: 0, expenses: 0 },
+        'Fri': { sales: 0, expenses: 0 },
+        'Sat': { sales: 0, expenses: 0 },
+        'Sun': { sales: 0, expenses: 0 },
+    };
 
     data.forEach((transaction) => {
-      const hour = new Date(transaction.date).getHours();
-      const hourString = hour.toString().padStart(2, '0') + ':00';
-      if (transaction.type === 'sale') {
-        hourlyData[hourString].sales += transaction.amount;
-      } else {
-        hourlyData[hourString].expenses += transaction.amount;
+      const day = format(new Date(transaction.date), 'E'); // E gives short day name e.g., 'Mon'
+      if (weeklyData[day]) {
+        if (transaction.type === 'sale') {
+          weeklyData[day].sales += transaction.amount;
+        } else {
+          weeklyData[day].expenses += transaction.amount;
+        }
       }
     });
 
-    return Object.entries(hourlyData).map(([hour, values]) => ({
-      hour,
+    return Object.entries(weeklyData).map(([day, values]) => ({
+      day,
       ...values,
-    })).filter(d => d.sales > 0 || d.expenses > 0);
+    }));
   }, [data]);
   
-    if (chartData.length === 0) {
-        return <div className="text-center text-muted-foreground p-8">No transaction data yet for today to display the chart.</div>
+    if (data.length === 0) {
+        return <div className="text-center text-muted-foreground p-8">No transaction data yet for this week to display the chart.</div>
     }
 
 
@@ -49,7 +53,7 @@ export function DailyChart({ data }: DailyChartProps) {
       <ResponsiveContainer>
         <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-          <XAxis dataKey="hour" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+          <XAxis dataKey="day" stroke="hsl(var(--muted-foreground))" fontSize={12} />
           <YAxis
             stroke="hsl(var(--muted-foreground))"
             fontSize={12}
