@@ -17,7 +17,6 @@ import { AboutDialog } from './about-dialog';
 export function MainLayout({ children, title }: { children: React.ReactNode; title: string }) {
   const isMobile = useIsMobile();
   const { settings } = useAppStore();
-  const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
 
   const renderDesktopLayout = () => (
     <SidebarProvider>
@@ -44,14 +43,19 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
 
   const renderMobileLayout = () => (
     <div className="flex min-h-screen w-full flex-col">
-       <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4">
+       <header className="sticky top-0 z-10 flex h-auto items-center justify-between gap-4 border-b bg-background px-4 py-3">
           <div className="flex items-center gap-3">
              <Avatar className="h-9 w-9">
               <AvatarFallback className="bg-muted text-muted-foreground">
                 <User className="h-5 w-5"/>
               </AvatarFallback>
             </Avatar>
-            <h1 className="text-lg font-semibold font-headline">{title}</h1>
+            <div>
+                <h1 className="text-lg font-semibold font-headline">{title}</h1>
+                <p className="text-xs text-muted-foreground">
+                    Welcome back, {settings.profile.name}
+                </p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/settings" passHref>
@@ -65,7 +69,6 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
       <main className="flex-1 pb-20">{children}</main>
       <BottomNav />
       <TransactionForm />
-      <AboutDialog open={isAboutDialogOpen} onOpenChange={setIsAboutDialogOpen} />
     </div>
   );
   
