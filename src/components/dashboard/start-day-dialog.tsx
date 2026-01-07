@@ -49,7 +49,7 @@ export function StartDayDialog() {
       <DialogTrigger asChild>
         <Button size="lg" className="rounded-full">Start Day</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader className="items-center text-center">
             <div className="rounded-full bg-primary/10 p-3 w-fit">
                 <Sunrise className="h-8 w-8 text-primary" />
