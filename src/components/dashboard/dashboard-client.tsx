@@ -8,6 +8,7 @@ import { StartDayDialog } from './start-day-dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { TransactionList } from '@/components/transactions/transaction-list';
 import { Sun } from 'lucide-react';
+import { DailyChart } from './daily-chart';
 
 export function DashboardClient() {
   const { getTodaysLog, endDay, transactions } = useAppStore();
@@ -60,6 +61,16 @@ export function DashboardClient() {
       </div>
       
       <DailySummaryCard log={todaysLog} />
+      
+      <Card>
+        <CardHeader>
+            <CardTitle className="font-headline text-xl">Daily Performance</CardTitle>
+            <CardDescription>A visual summary of today's sales and expenses.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <DailyChart data={todaysTransactions} />
+        </CardContent>
+      </Card>
       
       <Card>
         <CardHeader>
