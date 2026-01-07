@@ -4,16 +4,17 @@ import { DailyLog } from '@/lib/types';
 import { TrendingUp, TrendingDown, Banknote, Landmark } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { CURRENCIES } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface DailySummaryCardProps {
   log: DailyLog;
 }
 
-const StatCard = ({ title, value, icon: Icon, colorClass }: { title: string; value: string; icon: React.ElementType; colorClass?: string }) => (
+const StatCard = ({ title, value, icon: Icon, iconClassName }: { title: string; value: string; icon: React.ElementType; iconClassName?: string }) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      <Icon className={`h-4 w-4 text-muted-foreground ${colorClass}`} />
+      <Icon className={cn("h-4 w-4 text-muted-foreground", iconClassName)} />
     </CardHeader>
     <CardContent>
       <div className="text-2xl font-bold">{value}</div>
@@ -37,19 +38,19 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         title="Total Sales"
         value={formatCurrency(log.totalSales)}
         icon={TrendingUp}
-        colorClass="text-green-500"
+        iconClassName="text-green-500"
       />
       <StatCard 
         title="Total Expenses"
         value={formatCurrency(log.totalExpenses)}
         icon={TrendingDown}
-        colorClass="text-red-500"
+        iconClassName="text-red-500"
       />
       <StatCard 
         title="Net Profit"
         value={formatCurrency(profit)}
         icon={Landmark}
-        colorClass={profit >= 0 ? 'text-green-500' : 'text-red-500'}
+        iconClassName={profit >= 0 ? 'text-green-500' : 'text-red-500'}
       />
       <StatCard 
         title="Opening Cash"
