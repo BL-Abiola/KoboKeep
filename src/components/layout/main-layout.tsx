@@ -53,16 +53,16 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
             <h1 className="text-lg font-semibold font-headline">{title}</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setIsAboutDialogOpen(true)}>
-              <Info className="h-6 w-6" />
-              <span className="sr-only">About</span>
-            </Button>
             <Link href="/settings" passHref>
               <Button variant="ghost" size="icon">
                 <Settings className="h-6 w-6" />
                 <span className="sr-only">Settings</span>
               </Button>
             </Link>
+            <Button variant="ghost" size="icon" onClick={() => setIsAboutDialogOpen(true)}>
+              <Info className="h-6 w-6" />
+              <span className="sr-only">About</span>
+            </Button>
           </div>
         </header>
       <main className="flex-1 pb-20">{children}</main>
