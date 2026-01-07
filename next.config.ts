@@ -30,11 +30,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  ...(process.env.NODE_ENV === 'development' && {
-    experimental: {
-      allowedDevOrigins: ['**'],
-    },
-  }),
 };
 
 export default nextConfig;
