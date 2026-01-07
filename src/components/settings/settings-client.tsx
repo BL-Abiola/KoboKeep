@@ -13,9 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { CURRENCIES } from '@/lib/constants';
 import { ThemeSwitcher } from './theme-switcher';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { User } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Label } from '../ui/label';
 
@@ -38,28 +35,14 @@ function ProfileSettings() {
     toast({ title: 'Profile updated successfully!' });
   };
   
-  const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
-
   return (
-    <>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
-          <Avatar className="h-20 w-20">
-            {userAvatar ? <AvatarImage src={userAvatar.imageUrl} alt={settings.profile.name} /> : null}
-            <AvatarFallback><User className="h-8 w-8" /></AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold truncate">{settings.profile.name}</h3>
-            <p className="text-sm text-muted-foreground truncate">{settings.profile.businessName}</p>
-          </div>
-        </div>
-        <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-            <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-            <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
-        </form>
-        </Form>
-    </>
+    <Form {...form}>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+        <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+        <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
+    </form>
+    </Form>
   );
 }
 
