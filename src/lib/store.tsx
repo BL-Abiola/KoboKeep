@@ -1,7 +1,10 @@
+
 'use client';
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import type { AppState, Transaction, Debt, DailyLog, Settings, TransactionType, PaymentMethod, ProfileSettings } from './types';
+import type { AppState, Transaction, Debt, DailyLog, Settings } from './types';
 import { format } from 'date-fns';
+import { getExchangeRate } from './exchange-rates';
+
 
 const APP_STORAGE_KEY = 'isuna-app-state';
 
@@ -15,6 +18,7 @@ const initialState: AppState = {
       businessName: 'My Business',
     },
     currency: 'USD',
+    baseCurrency: 'USD',
   },
   isTransactionSheetOpen: false,
   editingTransactionId: null,
@@ -48,8 +52,18 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       const storedState = localStorage.getItem(APP_STORAGE_KEY);
       if (storedState) {
         const parsedState = JSON.parse(storedState);
-        // Ensure all keys from initialState are present
-        const mergedState = { ...initialState, ...parsedState, settings: { ...initialState.settings, ...parsedState.settings, profile: { ...initialState.settings.profile, ...parsedState.settings?.profile } } };
+        const mergedState = { 
+          ...initialState, 
+          ...parsedState, 
+          settings: { 
+            ...initialState.settings, 
+            ...parsedState.settings, 
+            profile: { 
+              ...initialState.settings.profile, 
+              ...parsedState.settings?.profile 
+            } 
+          } 
+        };
         setState(mergedState);
       }
     } catch (error) {
@@ -76,7 +90,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const startDay = (openingCash: number) => {
     const todayId = format(new Date(), 'yyyy-MM-dd');
     if (state.dailyLogs.some(log => log.id === todayId)) {
-      // Potentially reopen a closed log or throw error
       return;
     }
     const newLog: DailyLog = {
@@ -99,7 +112,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.id === todaysLog.id) {
           const profit = log.totalSales - log.totalExpenses;
-          return { ...log, status: 'closed', profit };
+          const closingCash = log.openingCash + profit;
+          return { ...log, status: 'closed', profit, closingCash };
         }
         return log;
       });
@@ -109,7 +123,9 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   const addTransaction = (transactionData: Omit<Transaction, 'id' | 'date'>) => {
     const todaysLog = getTodaysLog();
-    if (!todaysLog) return; // Or throw an error/notification
+    if (!todaysLog) {
+        throw new Error("Cannot add transaction without an active day log. Please start the day first.");
+    }
 
     const newTransaction: Transaction = {
       ...transactionData,
@@ -158,8 +174,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             let { totalSales, totalExpenses } = log;
             
             if (typeChanged) {
-                if (oldTransaction.type === 'sale') totalSales -= oldTransaction.amount;
-                else totalExpenses -= oldTransaction.amount;
+                if (oldTransaction!.type === 'sale') totalSales -= oldTransaction!.amount;
+                else totalExpenses -= oldTransaction!.amount;
 
                 if (updatedTransaction.type === 'sale') totalSales += updatedTransaction.amount;
                 else totalExpenses += updatedTransaction.amount;
@@ -176,7 +192,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       return { ...prev, transactions: newTransactions, dailyLogs: updatedLogs };
     });
   };
-
 
   const deleteTransaction = (transactionId: string) => {
     setState(prev => {
@@ -222,11 +237,59 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const updateSettings = (newSettings: Partial<Settings>) => {
-    setState(prev => ({ ...prev, settings: { ...prev.settings, ...newSettings } }));
-  };
+    setState(prev => {
+        const oldSettings = prev.settings;
+        const updatedSettings = { ...oldSettings, ...newSettings };
+
+        if (newSettings.currency && newSettings.currency !== oldSettings.currency) {
+            const rate = getExchangeRate(oldSettings.currency, newSettings.currency);
+            
+            if (rate) {
+                const convert = (amount: number) => amount * rate;
+
+                const newTransactions = prev.transactions.map(t => ({
+                    ...t,
+                    amount: convert(t.amount)
+                }));
+
+                const newDailyLogs = prev.dailyLogs.map(log => ({
+                    ...log,
+                    openingCash: convert(log.openingCash),
+                    closingCash: log.closingCash ? convert(log.closingCash) : undefined,
+                    totalSales: convert(log.totalSales),
+                    totalExpenses: convert(log.totalExpenses),
+                    profit: log.profit ? convert(log.profit) : undefined,
+                }));
+
+                const newDebts = prev.debts.map(debt => ({
+                    ...debt,
+                    amount: convert(debt.amount)
+                }));
+
+                return {
+                    ...prev,
+                    transactions: newTransactions,
+                    dailyLogs: newDailyLogs,
+                    debts: newDebts,
+                    settings: updatedSettings
+                };
+            }
+        }
+        
+        return { ...prev, settings: updatedSettings };
+    });
+};
+
   
   const resetData = () => {
-    setState(initialState);
+    const defaultState = {
+        ...initialState,
+        settings: {
+            ...initialState.settings,
+            profile: state.settings.profile // Keep profile settings
+        }
+    };
+    setState(defaultState);
   };
   
   const toggleTransactionSheet = (open: boolean, transactionId: string | null = null) => {

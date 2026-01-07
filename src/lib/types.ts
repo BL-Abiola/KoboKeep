@@ -1,3 +1,4 @@
+
 export type TransactionType = 'sale' | 'expense';
 export type PaymentMethod = 'cash' | 'card' | 'transfer';
 export type DebtType = 'owed_to_me' | 'i_owe';
@@ -40,6 +41,7 @@ export type ProfileSettings = {
 export type Settings = {
   profile: ProfileSettings;
   currency: string;
+  baseCurrency: string;
 };
 
 export type AppState = {
