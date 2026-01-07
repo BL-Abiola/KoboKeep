@@ -55,7 +55,7 @@ function ProfileSettings() {
             <p className="text-sm text-muted-foreground truncate">{settings.profile.businessName}</p>
           </div>
         </div>
-        <div className="w-full sm:max-w-sm">
+        <div className="max-w-sm">
             <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
@@ -82,7 +82,7 @@ function CurrencySettings() {
         <CardDescription>Select your preferred currency.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="w-full sm:max-w-sm">
+        <div className="max-w-sm">
             <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
             <SelectTrigger>
                 <SelectValue placeholder="Select a currency" />
@@ -151,7 +151,7 @@ export function SettingsClient() {
             <CardDescription>Customize the look and feel of the app.</CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="w-full sm:max-w-sm">
+            <div className="max-w-sm">
               <ThemeSwitcher/>
             </div>
         </CardContent>
