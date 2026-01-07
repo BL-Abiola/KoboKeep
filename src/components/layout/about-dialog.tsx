@@ -20,7 +20,7 @@ export function AboutDialog({ open, onOpenChange }: AboutDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-headline">About Kobokeep</DialogTitle>
+          <DialogTitle className="text-2xl font-headline">About KoboKeep</DialogTitle>
           <DialogDescription>
             A simple bookkeeping app for small businesses.
           </DialogDescription>

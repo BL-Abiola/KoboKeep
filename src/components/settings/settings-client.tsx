@@ -83,7 +83,7 @@ function AppearanceSettings() {
         </div>
         <Separator />
          <div className="space-y-4 pt-2">
-            <h3 className="text-lg font-medium">About Kobokeep</h3>
+            <h3 className="text-lg font-medium">About KoboKeep</h3>
             <div className="space-y-4 text-sm text-foreground">
                 <div>
                     <h4 className="font-semibold">Purpose</h4>
