@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Label } from '../ui/label';
 import { Github } from 'lucide-react';
 import Link from 'next/link';
+import { Separator } from '../ui/separator';
 
 
 const profileSchema = z.object({
@@ -68,7 +69,7 @@ function AppearanceSettings() {
         <div className="space-y-2">
             <Label className="text-sm font-medium">Currency</Label>
             <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
-                <SelectTrigger>
+                <SelectTrigger className="max-w-sm">
                     <SelectValue placeholder="Select a currency" />
                 </SelectTrigger>
                 <SelectContent>
@@ -79,6 +80,37 @@ function AppearanceSettings() {
                     ))}
                 </SelectContent>
             </Select>
+        </div>
+        <Separator />
+         <div className="space-y-4 pt-2">
+            <h3 className="text-lg font-medium">About Kobokeep</h3>
+            <div className="space-y-4 text-sm text-foreground">
+                <div>
+                    <h4 className="font-semibold">Purpose</h4>
+                    <p className="text-muted-foreground">
+                    A simple bookkeeping app that helps small business owners track sales, expenses, and debts.
+                    </p>
+                </div>
+                <div>
+                    <h4 className="font-semibold">Built with</h4>
+                    <p className="text-muted-foreground">
+                    Next.js, React, ShadCN, and Tailwind CSS.
+                    </p>
+                </div>
+                <div>
+                    <h4 className="font-semibold">Author</h4>
+                    <p className="text-muted-foreground">Firebase Team</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold">Source Code</h4>
+                    <Button variant="outline" asChild>
+                    <Link href="https://github.com/firebase/studio-apps/tree/main/isuna" target="_blank">
+                        <Github className="mr-2 h-4 w-4" />
+                        GitHub
+                    </Link>
+                    </Button>
+                </div>
+            </div>
         </div>
     </div>
     );
@@ -124,54 +156,13 @@ function DataSettings() {
   );
 }
 
-function AboutSection() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>About Kobokeep</CardTitle>
-                <CardDescription>A simple bookkeeping app for small businesses.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                 <div className="space-y-4 py-4 text-sm text-foreground">
-                    <div>
-                        <h3 className="font-semibold">Purpose</h3>
-                        <p className="text-muted-foreground">
-                        A simple bookkeeping app that helps small business owners track sales, expenses, and debts.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold">Built with</h3>
-                        <p className="text-muted-foreground">
-                        Next.js, React, ShadCN, and Tailwind CSS.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold">Author</h3>
-                        <p className="text-muted-foreground">Firebase Team</p>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold">Source Code</h3>
-                        <Button variant="outline" asChild>
-                        <Link href="https://github.com/firebase/studio-apps/tree/main/isuna" target="_blank">
-                            <Github className="mr-2 h-4 w-4" />
-                            GitHub
-                        </Link>
-                        </Button>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    )
-}
-
 export function SettingsClient() {
   return (
     <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
             <TabsTrigger value="data">Data</TabsTrigger>
-            <TabsTrigger value="about">About</TabsTrigger>
         </TabsList>
         <TabsContent value="profile">
             <Card>
@@ -197,9 +188,6 @@ export function SettingsClient() {
         </TabsContent>
         <TabsContent value="data">
              <DataSettings />
-        </TabsContent>
-         <TabsContent value="about">
-             <AboutSection />
         </TabsContent>
     </Tabs>
   );
