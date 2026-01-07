@@ -12,7 +12,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetClose,
 } from '@/components/ui/sheet';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -83,11 +82,6 @@ function TransactionFormContent() {
         variant: 'destructive',
       });
     }
-  };
-
-  const handleCancel = () => {
-    toggleTransactionSheet(false);
-    form.reset();
   };
 
   const currentDescription = form.watch('description');
@@ -186,9 +180,6 @@ function TransactionFormContent() {
         </div>
       </ScrollArea>
       <SheetFooter className="p-6 pt-0">
-        <SheetClose asChild>
-            <Button variant="outline" className="w-full sm:w-auto" onClick={handleCancel}>Cancel</Button>
-        </SheetClose>
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
@@ -207,7 +198,7 @@ export function TransactionForm() {
   if (isMobile) {
     return (
       <Sheet {...commonProps}>
-        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[75vh] flex flex-col rounded-t-lg">
+        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[75vh] flex flex-col rounded-t-lg" showCloseButton={false}>
           <TransactionFormContent />
         </SheetContent>
       </Sheet>
