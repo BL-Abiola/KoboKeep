@@ -12,7 +12,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetClose,
 } from '@/components/ui/sheet';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -64,7 +63,7 @@ function TransactionFormContent() {
   }, [editingTransaction, form]);
 
 
-  const onSubmit = (values: z.infer<typeof formSchema>>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
       if (editingTransaction) {
         updateTransaction({ ...editingTransaction, ...values });
@@ -89,7 +88,7 @@ function TransactionFormContent() {
 
   return (
     <>
-      <SheetHeader className="p-6 pb-0 text-left">
+      <SheetHeader className="p-6 pb-0">
         <SheetTitle>{editingTransaction ? 'Edit Transaction' : 'Create Transaction'}</SheetTitle>
         <SheetDescription>
           {editingTransaction ? 'Update the details of your transaction.' : 'Add a new sale or expense to your daily log.'}
@@ -178,9 +177,6 @@ function TransactionFormContent() {
         </div>
       </ScrollArea>
       <SheetFooter className="p-6 pt-4 border-t bg-background sticky bottom-0">
-        <SheetClose asChild>
-            <Button variant="outline" className="w-full sm:w-auto">Cancel</Button>
-        </SheetClose>
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
