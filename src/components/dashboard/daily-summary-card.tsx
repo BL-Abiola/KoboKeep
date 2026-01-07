@@ -15,7 +15,7 @@ const StatCard = ({ title, value, icon: Icon, iconClassName }: { title: string; 
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      <Icon className={cn("h-4 w-4 text-muted-foreground", iconClassName)} />
+      <Icon className={cn("h-4 w-4 text-muted-foreground transition-colors duration-300", iconClassName)} />
     </CardHeader>
     <CardContent>
       <div className="text-2xl font-bold">{value}</div>
@@ -36,7 +36,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalSales > prevSales.current) {
       setHighlightSale(true);
-      const timer = setTimeout(() => setHighlightSale(false), 1500);
+      const timer = setTimeout(() => setHighlightSale(false), 2500);
       return () => clearTimeout(timer);
     }
     prevSales.current = log.totalSales;
@@ -45,7 +45,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalExpenses > prevExpenses.current) {
       setHighlightExpense(true);
-      const timer = setTimeout(() => setHighlightExpense(false), 1500);
+      const timer = setTimeout(() => setHighlightExpense(false), 2500);
       return () => clearTimeout(timer);
     }
     prevExpenses.current = log.totalExpenses;
@@ -64,13 +64,13 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         title="Total Sales"
         value={formatCurrency(log.totalSales)}
         icon={TrendingUp}
-        iconClassName={cn({'text-green-500 transition-colors duration-300': highlightSale})}
+        iconClassName={cn({'text-green-500': highlightSale})}
       />
       <StatCard 
         title="Total Expenses"
         value={formatCurrency(log.totalExpenses)}
         icon={TrendingDown}
-        iconClassName={cn({'text-red-500 transition-colors duration-300': highlightExpense})}
+        iconClassName={cn({'text-red-500': highlightExpense})}
       />
       <StatCard 
         title="Net Profit"
