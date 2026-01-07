@@ -20,10 +20,13 @@ export function BottomNav() {
   const pathname = usePathname();
   const { toggleTransactionSheet } = useAppStore();
 
+  const firstHalf = navItems.slice(0, 2);
+  const secondHalf = navItems.slice(2);
+
   return (
     <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-20">
       <nav className="grid h-16 grid-cols-5 items-center justify-items-center text-sm">
-        {navItems.slice(0, 2).map((item) => {
+        {firstHalf.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -51,7 +54,7 @@ export function BottomNav() {
           </Button>
         </div>
 
-        {navItems.slice(2).map((item) => {
+        {secondHalf.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
