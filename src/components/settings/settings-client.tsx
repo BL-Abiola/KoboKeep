@@ -37,11 +37,15 @@ function ProfileSettings() {
   
   return (
     <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-        <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-        <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
-    </form>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="max-w-sm">
+                <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            </div>
+            <div className="max-w-sm">
+                <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            </div>
+            <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
+        </form>
     </Form>
   );
 }
@@ -54,11 +58,11 @@ function AppearanceSettings() {
 
   return (
     <div className="space-y-6">
-        <div>
+        <div className="space-y-2">
             <Label className="text-sm font-medium">Theme</Label>
             <ThemeSwitcher/>
         </div>
-        <div>
+        <div className="space-y-2">
             <Label className="text-sm font-medium">Currency</Label>
             <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
                 <SelectTrigger>
