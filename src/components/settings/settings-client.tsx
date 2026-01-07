@@ -16,6 +16,7 @@ import { ThemeSwitcher } from './theme-switcher';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 
 const profileSchema = z.object({
@@ -39,69 +40,60 @@ function ProfileSettings() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Profile</CardTitle>
-        <CardDescription>Manage your personal and business information.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <Avatar className="h-16 w-16">
+    <>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
+          <Avatar className="h-20 w-20">
             {userAvatar ? <AvatarImage src={userAvatar.imageUrl} alt={settings.profile.name} /> : null}
-            <AvatarFallback><User/></AvatarFallback>
+            <AvatarFallback><User className="h-8 w-8" /></AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold truncate">{settings.profile.name}</h3>
+            <h3 className="text-xl font-semibold truncate">{settings.profile.name}</h3>
             <p className="text-sm text-muted-foreground truncate">{settings.profile.businessName}</p>
           </div>
         </div>
-        <div className="max-w-sm">
-            <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-                <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-                <Button type="submit" className="w-full">Save Changes</Button>
-            </form>
-            </Form>
-        </div>
-      </CardContent>
-    </Card>
+        <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
+        </form>
+        </Form>
+    </>
   );
 }
 
-function CurrencySettings() {
+function AppearanceSettings() {
   const { settings, updateSettings } = useAppStore();
   const handleCurrencyChange = (currency: string) => {
     updateSettings({ currency });
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Currency</CardTitle>
-        <CardDescription>Select your preferred currency.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="max-w-sm">
+    <div className="space-y-8">
+        <div>
+            <FormLabel>Theme</FormLabel>
+            <ThemeSwitcher/>
+        </div>
+        <div>
+            <FormLabel>Currency</FormLabel>
             <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
-            <SelectTrigger>
-                <SelectValue placeholder="Select a currency" />
-            </SelectTrigger>
-            <SelectContent>
-                {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
-                <SelectItem key={code} value={code}>
-                    {symbol} - {name} ({code})
-                </SelectItem>
-                ))}
-            </SelectContent>
+                <SelectTrigger>
+                    <SelectValue placeholder="Select a currency" />
+                </SelectTrigger>
+                <SelectContent>
+                    {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
+                    <SelectItem key={code} value={code}>
+                        {symbol} - {name} ({code})
+                    </SelectItem>
+                    ))}
+                </SelectContent>
             </Select>
         </div>
-      </CardContent>
-    </Card>
-  );
+    </div>
+    );
 }
 
-function DangerZone() {
+function DataSettings() {
   const { resetData } = useAppStore();
   const { toast } = useToast();
 
@@ -113,8 +105,8 @@ function DangerZone() {
   return (
     <Card className="border-destructive">
       <CardHeader>
-        <CardTitle className="text-destructive">Danger Zone</CardTitle>
-        <CardDescription>These actions are irreversible. Please be certain.</CardDescription>
+        <CardTitle className="text-destructive">Reset Application Data</CardTitle>
+        <CardDescription>This action is irreversible. This will permanently delete all transactions, daily logs, debts, and settings.</CardDescription>
       </CardHeader>
       <CardContent>
         <AlertDialog>
@@ -125,7 +117,7 @@ function DangerZone() {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete all transactions, daily logs, debts, and settings.
+                This action cannot be undone. This will permanently delete all your data.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -143,21 +135,37 @@ function DangerZone() {
 
 export function SettingsClient() {
   return (
-    <div className="grid gap-6">
-      <ProfileSettings />
-      <Card>
-        <CardHeader>
-            <CardTitle>Appearance</CardTitle>
-            <CardDescription>Customize the look and feel of the app.</CardDescription>
-        </CardHeader>
-        <CardContent>
-            <div className="max-w-sm">
-              <ThemeSwitcher/>
-            </div>
-        </CardContent>
-      </Card>
-      <CurrencySettings />
-      <DangerZone />
-    </div>
+    <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="appearance">Appearance</TabsTrigger>
+            <TabsTrigger value="data">Data</TabsTrigger>
+        </TabsList>
+        <TabsContent value="profile">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Profile</CardTitle>
+                    <CardDescription>Manage your personal and business information.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ProfileSettings />
+                </CardContent>
+            </Card>
+        </TabsContent>
+        <TabsContent value="appearance">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Appearance</CardTitle>
+                    <CardDescription>Customize the look and feel of the app.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <AppearanceSettings />
+                </CardContent>
+            </Card>
+        </TabsContent>
+        <TabsContent value="data">
+             <DataSettings />
+        </TabsContent>
+    </Tabs>
   );
 }
