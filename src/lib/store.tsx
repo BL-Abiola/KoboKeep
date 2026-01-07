@@ -19,6 +19,7 @@ const initialState: AppState = {
     },
     currency: 'USD',
     baseCurrency: 'USD',
+    onboardingCompleted: false,
   },
   isTransactionSheetOpen: false,
   editingTransactionId: null,
@@ -276,7 +277,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             }
         }
         
-        return { ...prev, settings: updatedSettings };
+        return { ...prev, settings: { ...prev.settings, ...newSettings } };
     });
 };
 

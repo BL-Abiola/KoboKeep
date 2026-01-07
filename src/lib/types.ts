@@ -42,6 +42,7 @@ export type Settings = {
   profile: ProfileSettings;
   currency: string;
   baseCurrency: string;
+  onboardingCompleted: boolean;
 };
 
 export type AppState = {
