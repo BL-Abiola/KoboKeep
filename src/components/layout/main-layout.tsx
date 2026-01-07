@@ -28,7 +28,7 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
 
   const renderMobileLayout = () => (
     <div className="flex min-h-screen w-full flex-col">
-       <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4">
+       <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4">
           <h1 className="text-xl font-semibold font-headline">{title}</h1>
         </header>
       <main className="flex-1 pb-20">{children}</main>
