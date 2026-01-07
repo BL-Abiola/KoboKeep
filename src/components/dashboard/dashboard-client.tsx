@@ -52,26 +52,26 @@ export function DashboardClient() {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
-          </div>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">End Day</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure you want to end the day?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This will close today's log and calculate your final profit. You won't be able to add more transactions to it.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={endDay}>End Day</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+        <div>
+          <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
+        </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">End Day</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure you want to end the day?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will close today's log and calculate your final profit. You won't be able to add more transactions to it.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={endDay}>End Day</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       
       <DailySummaryCard log={todaysLog} />
