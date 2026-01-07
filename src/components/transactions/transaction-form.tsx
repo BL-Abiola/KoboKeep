@@ -88,11 +88,11 @@ function TransactionFormContent() {
 
   return (
     <>
-      <SheetHeader className="p-6 pb-0">
+      <SheetHeader className="p-4 pb-0">
         <SheetTitle>{editingTransaction ? 'Edit Transaction' : 'Create Transaction'}</SheetTitle>
       </SheetHeader>
       
-      <ScrollArea className="flex-1 px-6">
+      <ScrollArea className="flex-1 px-4">
         <div className="py-6">
           <Form {...form}>
             <form className="space-y-6">
@@ -175,7 +175,7 @@ function TransactionFormContent() {
           </Form>
         </div>
       </ScrollArea>
-      <SheetFooter className="p-6 pt-8">
+      <SheetFooter className="p-4 pt-8">
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
@@ -194,7 +194,7 @@ export function TransactionForm() {
   if (isMobile) {
     return (
       <Sheet {...commonProps}>
-        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[85vh] flex flex-col rounded-t-lg" showCloseButton={false}>
+        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[85vh] flex flex-col rounded-t-lg p-0" showCloseButton={false}>
           <TransactionFormContent />
         </SheetContent>
       </Sheet>
