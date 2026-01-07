@@ -91,7 +91,7 @@ export function DashboardClient() {
             <CardTitle className="font-headline text-xl">Today's Transactions</CardTitle>
             <CardDescription>A list of all sales and expenses for today.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
             <TransactionList transactions={todaysTransactions} />
         </CardContent>
       </Card>
