@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DailyLog } from '@/lib/types';
-import { TrendingUp, TrendingDown, Banknote, Landmark } from 'lucide-react';
+import { TrendingUp, TrendingDown, Banknote, Landmark, Wallet } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { CURRENCIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -58,6 +58,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   };
   
   const profit = log.totalSales - log.totalExpenses;
+  const cashOnHand = log.openingCash + profit;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -80,9 +81,10 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         iconClassName={profit >= 0 ? 'text-green-500' : 'text-red-500'}
       />
       <StatCard 
-        title="Opening Cash"
-        value={formatCurrency(log.openingCash)}
-        icon={Banknote}
+        title="Cash on Hand"
+        value={formatCurrency(cashOnHand)}
+        icon={Wallet}
+        iconClassName={cashOnHand >= log.openingCash ? 'text-green-500' : 'text-red-500'}
       />
     </div>
   );
