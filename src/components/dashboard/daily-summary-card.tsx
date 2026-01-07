@@ -37,7 +37,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalSales > prevSales.current) {
       setHighlightSale(true);
-      const timer = setTimeout(() => setHighlightSale(false), 2000);
+      const timer = setTimeout(() => setHighlightSale(false), 3000);
       return () => clearTimeout(timer);
     }
     prevSales.current = log.totalSales;
@@ -46,7 +46,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalExpenses > prevExpenses.current) {
       setHighlightExpense(true);
-      const timer = setTimeout(() => setHighlightExpense(false), 2000);
+      const timer = setTimeout(() => setHighlightExpense(false), 3000);
       return () => clearTimeout(timer);
     }
     prevExpenses.current = log.totalExpenses;
