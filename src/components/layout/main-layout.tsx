@@ -8,7 +8,8 @@ import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { TransactionForm } from '@/components/transactions/transaction-form';
 import { useAppStore } from '@/lib/store';
 import { Button } from '../ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Settings } from 'lucide-react';
+import Link from 'next/link';
 
 export function MainLayout({ children, title }: { children: React.ReactNode; title: string }) {
   const isMobile = useIsMobile();
@@ -20,7 +21,7 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
         <SidebarNav />
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <SidebarTrigger className="sm:hidden" />
           <h1 className="text-xl font-semibold md:text-3xl font-headline">{title}</h1>
         </header>
@@ -34,10 +35,12 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
     <div className="flex min-h-screen w-full flex-col">
        <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4">
           <h1 className="text-xl font-semibold font-headline">{title}</h1>
-          <Button variant="ghost" size="icon" onClick={() => toggleTransactionSheet(true)}>
-            <Plus className="h-6 w-6" />
-            <span className="sr-only">Add Transaction</span>
-          </Button>
+          <Link href="/settings" passHref>
+            <Button variant="ghost" size="icon">
+              <Settings className="h-6 w-6" />
+              <span className="sr-only">Settings</span>
+            </Button>
+          </Link>
         </header>
       <main className="flex-1 pb-20">{children}</main>
       <BottomNav />
