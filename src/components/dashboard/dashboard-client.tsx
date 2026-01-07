@@ -54,7 +54,7 @@ export function DashboardClient() {
         <div className="space-y-6 animate-fade-in">
         <div className="flex justify-between items-center">
             <div>
-            <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
+              <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
             </div>
             <AlertDialog>
             <AlertDialogTrigger asChild>
