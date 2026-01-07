@@ -12,6 +12,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  SheetClose,
 } from '@/components/ui/sheet';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -21,6 +22,7 @@ import { DescriptionSuggester } from './description-suggester';
 import { ScrollArea } from '../ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Dialog, DialogContent } from '../ui/dialog';
+import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   type: z.enum(['sale', 'expense']),
@@ -83,6 +85,11 @@ function TransactionFormContent() {
     }
   };
 
+  const handleCancel = () => {
+    toggleTransactionSheet(false);
+    form.reset();
+  };
+
   const currentDescription = form.watch('description');
   const pastDescriptions = React.useMemo(() => transactions.map(t => t.description), [transactions]);
 
@@ -94,10 +101,11 @@ function TransactionFormContent() {
           {editingTransaction ? 'Update the details of your transaction.' : 'Add a new sale or expense to your daily log.'}
         </SheetDescription>
       </SheetHeader>
-      <ScrollArea className="flex-1">
-        <div className="px-6 py-4">
+      
+      <ScrollArea className="flex-1 px-6">
+        <div className="py-6">
           <Form {...form}>
-            <form className="space-y-4">
+            <form className="space-y-6">
               <FormField
                 control={form.control}
                 name="type"
@@ -167,6 +175,7 @@ function TransactionFormContent() {
                   </FormItem>
                 )}
               />
+              <Separator />
               <DescriptionSuggester
                 currentDescription={currentDescription}
                 pastTransactions={pastDescriptions}
@@ -176,7 +185,10 @@ function TransactionFormContent() {
           </Form>
         </div>
       </ScrollArea>
-      <SheetFooter className="p-6 pt-4 border-t bg-background sticky bottom-0">
+      <SheetFooter className="p-6 pt-0">
+        <SheetClose asChild>
+            <Button variant="outline" className="w-full sm:w-auto" onClick={handleCancel}>Cancel</Button>
+        </SheetClose>
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
@@ -187,10 +199,15 @@ export function TransactionForm() {
   const { isTransactionSheetOpen, toggleTransactionSheet } = useAppStore();
   const isMobile = useIsMobile();
 
+  const commonProps = {
+    open: isTransactionSheetOpen,
+    onOpenChange: toggleTransactionSheet,
+  };
+
   if (isMobile) {
     return (
-      <Sheet open={isTransactionSheetOpen} onOpenChange={toggleTransactionSheet}>
-        <SheetContent side="bottom" className="rounded-t-lg sm:max-w-2xl sm:mx-auto h-[75vh] flex flex-col">
+      <Sheet {...commonProps}>
+        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[75vh] flex flex-col rounded-t-lg">
           <TransactionFormContent />
         </SheetContent>
       </Sheet>
@@ -198,9 +215,9 @@ export function TransactionForm() {
   }
 
   return (
-    <Dialog open={isTransactionSheetOpen} onOpenChange={toggleTransactionSheet}>
-      <DialogContent className="sm:max-w-xl">
-        <TransactionFormContent />
+    <Dialog {...commonProps}>
+      <DialogContent className="sm:max-w-2xl p-0 flex flex-col h-auto max-h-[90vh]">
+         <TransactionFormContent/>
       </DialogContent>
     </Dialog>
   );
