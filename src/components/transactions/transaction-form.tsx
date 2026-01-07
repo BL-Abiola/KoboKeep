@@ -175,7 +175,7 @@ function TransactionFormContent() {
           </Form>
         </div>
       </ScrollArea>
-      <SheetFooter className="p-6 pt-12">
+      <SheetFooter className="p-6 pt-8">
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
@@ -194,7 +194,7 @@ export function TransactionForm() {
   if (isMobile) {
     return (
       <Sheet {...commonProps}>
-        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[75vh] flex flex-col rounded-t-lg" showCloseButton={false}>
+        <SheetContent side="bottom" className="sm:max-w-2xl sm:mx-auto h-[85vh] flex flex-col rounded-t-lg" showCloseButton={false}>
           <TransactionFormContent />
         </SheetContent>
       </Sheet>
