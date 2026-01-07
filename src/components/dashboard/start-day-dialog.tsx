@@ -47,7 +47,7 @@ export function StartDayDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="lg">Start Day</Button>
+        <Button size="lg" className="rounded-full">Start Day</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="items-center text-center">
@@ -72,13 +72,13 @@ export function StartDayDialog() {
                 type="number"
                 value={openingCash}
                 onChange={(e) => setOpeningCash(e.target.value)}
-                className="pl-7 text-lg h-12"
+                className="pl-7 text-lg h-12 rounded-full"
                 placeholder="0.00"
             />
           </div>
         </div>
         <DialogFooter className="sm:justify-center">
-          <Button onClick={handleStartDay} className="w-full" size="lg">Confirm & Start Day</Button>
+          <Button onClick={handleStartDay} className="w-full rounded-full" size="lg">Confirm & Start Day</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
