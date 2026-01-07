@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { usePathname } from 'next/link';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Home, List, BookUser, BarChart3, Settings, Wallet, PlusCircle } from 'lucide-react';
 import { SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
