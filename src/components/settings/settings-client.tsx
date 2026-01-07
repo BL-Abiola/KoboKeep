@@ -1,0 +1,157 @@
+'use client';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useAppStore } from '@/lib/store';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { CURRENCIES } from '@/lib/constants';
+import { ThemeSwitcher } from './theme-switcher';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { User } from 'lucide-react';
+
+
+const profileSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  businessName: z.string().min(1, 'Business name is required'),
+});
+
+function ProfileSettings() {
+  const { settings, updateSettings } = useAppStore();
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof profileSchema>>({
+    resolver: zodResolver(profileSchema),
+    values: settings.profile,
+  });
+
+  const onSubmit = (values: z.infer<typeof profileSchema>) => {
+    updateSettings({ profile: values });
+    toast({ title: 'Profile updated successfully!' });
+  };
+  
+  const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Profile</CardTitle>
+        <CardDescription>Manage your personal and business information.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center space-x-4 mb-6">
+          <Avatar className="h-16 w-16">
+            {userAvatar ? <AvatarImage src={userAvatar.imageUrl} alt={settings.profile.name} /> : null}
+            <AvatarFallback><User/></AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="text-lg font-semibold">{settings.profile.name}</h3>
+            <p className="text-sm text-muted-foreground">{settings.profile.businessName}</p>
+          </div>
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+            <Button type="submit">Save Changes</Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+}
+
+function CurrencySettings() {
+  const { settings, updateSettings } = useAppStore();
+  const handleCurrencyChange = (currency: string) => {
+    updateSettings({ currency });
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Currency</CardTitle>
+        <CardDescription>Select your preferred currency.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
+          <SelectTrigger className="w-[280px]">
+            <SelectValue placeholder="Select a currency" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
+              <SelectItem key={code} value={code}>
+                {symbol} - {name} ({code})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </CardContent>
+    </Card>
+  );
+}
+
+function DangerZone() {
+  const { resetData } = useAppStore();
+  const { toast } = useToast();
+
+  const handleReset = () => {
+    resetData();
+    toast({ title: 'Application Reset', description: 'All your data has been cleared.' });
+  };
+
+  return (
+    <Card className="border-destructive">
+      <CardHeader>
+        <CardTitle className="text-destructive">Danger Zone</CardTitle>
+        <CardDescription>These actions are irreversible. Please be certain.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">Reset App Data</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete all transactions, daily logs, debts, and settings.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleReset} className="bg-destructive hover:bg-destructive/90">
+                Yes, reset everything
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function SettingsClient() {
+  return (
+    <div className="grid gap-6">
+      <ProfileSettings />
+      <Card>
+        <CardHeader>
+            <CardTitle>Appearance</CardTitle>
+            <CardDescription>Customize the look and feel of the app.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <ThemeSwitcher/>
+        </CardContent>
+      </Card>
+      <CurrencySettings />
+      <DangerZone />
+    </div>
+  );
+}
