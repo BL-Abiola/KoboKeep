@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -176,7 +175,7 @@ function TransactionFormContent() {
           </Form>
         </div>
       </ScrollArea>
-      <SheetFooter className="p-6 pt-0">
+      <SheetFooter className="p-6 pt-4">
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
