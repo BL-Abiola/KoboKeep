@@ -65,13 +65,13 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         title="Total Sales"
         value={formatCurrency(log.totalSales)}
         icon={TrendingUp}
-        className={cn({'animate-blink-sale': highlightSale})}
+        iconClassName={cn({'animate-blink-sale text-green-500': highlightSale})}
       />
       <StatCard 
         title="Total Expenses"
         value={formatCurrency(log.totalExpenses)}
         icon={TrendingDown}
-        className={cn({'animate-blink-expense': highlightExpense})}
+        iconClassName={cn({'animate-blink-expense text-red-500': highlightExpense})}
       />
       <StatCard 
         title="Net Profit"
