@@ -171,9 +171,6 @@ export function TransactionForm() {
           </div>
         </ScrollArea>
         <SheetFooter className="p-6 pt-4 border-t bg-background sticky bottom-0">
-          <SheetClose asChild>
-              <Button variant="outline" className="w-full sm:w-auto">Cancel</Button>
-          </SheetClose>
           <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
         </SheetFooter>
       </SheetContent>
