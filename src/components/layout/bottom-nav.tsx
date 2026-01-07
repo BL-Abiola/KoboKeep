@@ -38,14 +38,15 @@ export function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 border-t bg-background/95 backdrop-blur-sm z-20">
-      <div className="grid grid-cols-5 h-full items-stretch justify-items-center text-sm">
+      <div className="grid grid-cols-5 h-full items-stretch justify-items-center text-sm relative">
         {navLinks.slice(0, 2)}
-        <div className="flex items-center justify-center">
+        <div className="absolute left-1/2 -translate-x-1/2 -top-6">
             <Button 
+                variant="outline"
                 size="icon" 
-                className="h-14 w-14 rounded-full shadow-lg"
+                className="h-12 w-12 rounded-full shadow-lg bg-background border-2"
                 onClick={() => toggleTransactionSheet(true)}>
-                <Plus className="h-6 w-6" />
+                <Plus className="h-6 w-6 text-primary" />
                 <span className="sr-only">Add Transaction</span>
             </Button>
         </div>
