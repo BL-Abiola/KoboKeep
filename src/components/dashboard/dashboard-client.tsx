@@ -81,7 +81,7 @@ export function DashboardClient() {
             <CardTitle className="font-headline text-xl">Weekly Performance</CardTitle>
             <CardDescription>A visual summary of this week's sales and expenses.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2">
             <WeeklyChart data={weeklyTransactions} />
         </CardContent>
       </Card>
