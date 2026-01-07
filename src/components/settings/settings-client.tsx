@@ -45,21 +45,21 @@ function ProfileSettings() {
         <CardDescription>Manage your personal and business information.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center space-x-4 mb-6">
+        <div className="flex flex-wrap items-center gap-4 mb-6">
           <Avatar className="h-16 w-16">
             {userAvatar ? <AvatarImage src={userAvatar.imageUrl} alt={settings.profile.name} /> : null}
             <AvatarFallback><User/></AvatarFallback>
           </Avatar>
-          <div>
-            <h3 className="text-lg font-semibold">{settings.profile.name}</h3>
-            <p className="text-sm text-muted-foreground">{settings.profile.businessName}</p>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold truncate">{settings.profile.name}</h3>
+            <p className="text-sm text-muted-foreground truncate">{settings.profile.businessName}</p>
           </div>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
             <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" className="w-full">Save Changes</Button>
           </form>
         </Form>
       </CardContent>
@@ -81,7 +81,7 @@ function CurrencySettings() {
       </CardHeader>
       <CardContent>
         <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
-          <SelectTrigger className="w-[280px]">
+          <SelectTrigger className="w-full sm:w-[280px]">
             <SelectValue placeholder="Select a currency" />
           </SelectTrigger>
           <SelectContent>
