@@ -22,20 +22,14 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
         <SidebarNav />
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-10 flex h-auto items-center justify-between gap-4 border-b bg-background px-4 py-4 sm:static sm:border-0 sm:bg-transparent sm:px-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="sm:hidden" />
-            <h1 className="text-xl font-semibold md:text-3xl font-headline">{title}</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-muted text-muted-foreground">
-                <User className="h-4 w-4"/>
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium">{settings.profile.name}</span>
-              <span className="text-xs text-muted-foreground">{settings.profile.businessName}</span>
+            <div>
+                <h1 className="text-xl font-semibold md:text-3xl font-headline">{title}</h1>
+                <p className="text-sm text-muted-foreground">
+                    Welcome back, {settings.profile.name}.
+                </p>
             </div>
           </div>
         </header>
