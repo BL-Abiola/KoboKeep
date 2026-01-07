@@ -8,12 +8,13 @@ import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { TransactionForm } from '@/components/transactions/transaction-form';
 import { useAppStore } from '@/lib/store';
 import { Button } from '../ui/button';
-import { Plus, Settings } from 'lucide-react';
+import { Plus, Settings, User } from 'lucide-react';
 import Link from 'next/link';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 
 export function MainLayout({ children, title }: { children: React.ReactNode; title: string }) {
   const isMobile = useIsMobile();
-  const { toggleTransactionSheet } = useAppStore();
+  const { toggleTransactionSheet, settings } = useAppStore();
 
   const renderDesktopLayout = () => (
     <SidebarProvider>
@@ -21,9 +22,22 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
         <SidebarNav />
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <SidebarTrigger className="sm:hidden" />
-          <h1 className="text-xl font-semibold md:text-3xl font-headline">{title}</h1>
+        <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="sm:hidden" />
+            <h1 className="text-xl font-semibold md:text-3xl font-headline">{title}</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-muted text-muted-foreground">
+                <User className="h-4 w-4"/>
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium">{settings.profile.name}</span>
+              <span className="text-xs text-muted-foreground">{settings.profile.businessName}</span>
+            </div>
+          </div>
         </header>
         <main className="flex-1">{children}</main>
       </SidebarInset>
@@ -34,7 +48,14 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
   const renderMobileLayout = () => (
     <div className="flex min-h-screen w-full flex-col">
        <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4">
-          <h1 className="text-xl font-semibold font-headline">{title}</h1>
+          <div className="flex items-center gap-3">
+             <Avatar className="h-9 w-9">
+              <AvatarFallback className="bg-muted text-muted-foreground">
+                <User className="h-5 w-5"/>
+              </AvatarFallback>
+            </Avatar>
+            <h1 className="text-lg font-semibold font-headline">{title}</h1>
+          </div>
           <Link href="/settings" passHref>
             <Button variant="ghost" size="icon">
               <Settings className="h-6 w-6" />
