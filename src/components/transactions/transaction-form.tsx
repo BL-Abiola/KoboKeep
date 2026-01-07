@@ -79,7 +79,7 @@ export function TransactionForm() {
 
   return (
     <Sheet open={isTransactionSheetOpen} onOpenChange={(open) => toggleTransactionSheet(open)}>
-      <SheetContent side="bottom" className="rounded-t-lg">
+      <SheetContent side="bottom" className="rounded-t-lg sm:max-w-2xl sm:mx-auto">
         <SheetHeader>
           <SheetTitle>{editingTransaction ? 'Edit Transaction' : 'Create Transaction'}</SheetTitle>
           <SheetDescription>
