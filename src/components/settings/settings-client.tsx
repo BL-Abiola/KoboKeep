@@ -17,6 +17,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Label } from '../ui/label';
 
 
 const profileSchema = z.object({
@@ -71,11 +72,11 @@ function AppearanceSettings() {
   return (
     <div className="space-y-8">
         <div>
-            <FormLabel>Theme</FormLabel>
+            <Label className="text-sm font-medium">Theme</Label>
             <ThemeSwitcher/>
         </div>
         <div>
-            <FormLabel>Currency</FormLabel>
+            <Label className="text-sm font-medium">Currency</Label>
             <Select onValueChange={handleCurrencyChange} defaultValue={settings.currency}>
                 <SelectTrigger>
                     <SelectValue placeholder="Select a currency" />
