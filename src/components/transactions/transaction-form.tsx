@@ -52,7 +52,7 @@ export function TransactionForm() {
         description: '',
       });
     }
-  }, [editingTransaction, form]);
+  }, [editingTransaction, form, isTransactionSheetOpen]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
@@ -78,8 +78,8 @@ export function TransactionForm() {
   const pastDescriptions = React.useMemo(() => transactions.map(t => t.description), [transactions]);
 
   return (
-    <Sheet open={isTransactionSheetOpen} onOpenChange={toggleTransactionSheet}>
-      <SheetContent>
+    <Sheet open={isTransactionSheetOpen} onOpenChange={(open) => toggleTransactionSheet(open)}>
+      <SheetContent side="bottom" className="rounded-t-lg">
         <SheetHeader>
           <SheetTitle>{editingTransaction ? 'Edit Transaction' : 'Create Transaction'}</SheetTitle>
           <SheetDescription>
