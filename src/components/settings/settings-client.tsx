@@ -70,7 +70,7 @@ function AppearanceSettings() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
         <div>
             <Label className="text-sm font-medium">Theme</Label>
             <ThemeSwitcher/>
