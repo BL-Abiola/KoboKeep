@@ -175,7 +175,7 @@ function TransactionFormContent() {
           </Form>
         </div>
       </ScrollArea>
-      <SheetFooter className="p-6 pt-4">
+      <SheetFooter className="p-6 pt-12">
         <Button type="submit" onClick={form.handleSubmit(onSubmit)} className="w-full sm:w-auto">Save Transaction</Button>
       </SheetFooter>
     </>
