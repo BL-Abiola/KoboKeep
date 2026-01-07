@@ -91,9 +91,6 @@ function TransactionFormContent() {
     <>
       <SheetHeader className="p-6 pb-0">
         <SheetTitle>{editingTransaction ? 'Edit Transaction' : 'Create Transaction'}</SheetTitle>
-        <SheetDescription>
-          {editingTransaction ? 'Update the details of your transaction.' : 'Add a new sale or expense to your daily log.'}
-        </SheetDescription>
       </SheetHeader>
       
       <ScrollArea className="flex-1 px-6">
