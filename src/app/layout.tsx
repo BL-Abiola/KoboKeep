@@ -18,7 +18,7 @@ const fontHeadline = Poppins({
 
 
 export const metadata: Metadata = {
-  title: 'Ìṣúná',
+  title: 'Kobokeep',
   description: 'Your personal finance manager.',
 };
 

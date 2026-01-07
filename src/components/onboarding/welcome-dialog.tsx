@@ -24,7 +24,7 @@ type OnboardingValues = z.infer<typeof onboardingSchema>;
 
 const steps = [
   {
-    title: "Welcome to Ìṣúná!",
+    title: "Welcome to Kobokeep!",
     description: "Let's get your profile set up.",
     fields: ['name', 'businessName'],
   },
@@ -82,7 +82,7 @@ export function WelcomeDialog() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Wallet className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-semibold font-headline">Ìṣúná</h1>
+            <h1 className="text-2xl font-semibold font-headline">Kobokeep</h1>
           </div>
           <Progress value={(step + 1) / steps.length * 100} className="w-full h-2" />
         </CardHeader>
