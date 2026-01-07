@@ -5,6 +5,7 @@ import { TrendingUp, TrendingDown, Banknote, Landmark } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { CURRENCIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import { useState, useEffect, useRef } from 'react';
 
 interface DailySummaryCardProps {
   log: DailyLog;
@@ -26,6 +27,31 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   const { settings } = useAppStore();
   const currencySymbol = CURRENCIES[settings.currency]?.symbol || '$';
   
+  const [highlightSale, setHighlightSale] = useState(false);
+  const [highlightExpense, setHighlightExpense] = useState(false);
+
+  const prevSales = useRef(log.totalSales);
+  const prevExpenses = useRef(log.totalExpenses);
+
+  useEffect(() => {
+    if (log.totalSales > prevSales.current) {
+      setHighlightSale(true);
+      const timer = setTimeout(() => setHighlightSale(false), 1500);
+      return () => clearTimeout(timer);
+    }
+    prevSales.current = log.totalSales;
+  }, [log.totalSales]);
+
+  useEffect(() => {
+    if (log.totalExpenses > prevExpenses.current) {
+      setHighlightExpense(true);
+      const timer = setTimeout(() => setHighlightExpense(false), 1500);
+      return () => clearTimeout(timer);
+    }
+    prevExpenses.current = log.totalExpenses;
+  }, [log.totalExpenses]);
+
+
   const formatCurrency = (amount: number) => {
     return `${currencySymbol}${new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount)}`;
   };
@@ -38,13 +64,13 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         title="Total Sales"
         value={formatCurrency(log.totalSales)}
         icon={TrendingUp}
-        iconClassName="text-green-500"
+        iconClassName={cn({'text-green-500 transition-colors duration-300': highlightSale})}
       />
       <StatCard 
         title="Total Expenses"
         value={formatCurrency(log.totalExpenses)}
         icon={TrendingDown}
-        iconClassName="text-red-500"
+        iconClassName={cn({'text-red-500 transition-colors duration-300': highlightExpense})}
       />
       <StatCard 
         title="Net Profit"
