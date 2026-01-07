@@ -35,7 +35,7 @@ export function BottomNav() {
               )}
             >
               <item.icon className="h-5 w-5" />
-              <span>{item.label}</span>
+              <span className="text-xs">{item.label}</span>
             </Link>
           );
         })}
@@ -43,11 +43,11 @@ export function BottomNav() {
         <div className="relative -top-6">
           <Button
             size="icon"
-            className="h-14 w-14 rounded-full bg-accent text-accent-foreground shadow-lg hover:bg-accent/90"
+            className="h-16 w-16 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-transform hover:scale-110"
             onClick={() => toggleTransactionSheet(true)}
             aria-label="New Transaction"
           >
-            <Plus className="h-6 w-6" />
+            <Plus className="h-8 w-8" />
           </Button>
         </div>
 
@@ -63,7 +63,7 @@ export function BottomNav() {
               )}
             >
               <item.icon className="h-5 w-5" />
-              <span>{item.label}</span>
+              <span className="text-xs">{item.label}</span>
             </Link>
           );
         })}

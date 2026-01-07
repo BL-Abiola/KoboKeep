@@ -23,8 +23,10 @@ export function SidebarNav() {
     <>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <Wallet className="h-6 w-6 text-primary" />
-          <h2 className="text-lg font-semibold">Ìṣúná</h2>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <Wallet className="h-5 w-5" />
+          </div>
+          <h2 className="text-lg font-semibold font-headline">Ìṣúná</h2>
         </div>
       </SidebarHeader>
       <SidebarContent>

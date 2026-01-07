@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { DailySummaryCard } from './daily-summary-card';
 import { StartDayDialog } from './start-day-dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Transaction } from '@/lib/types';
 import { TransactionList } from '@/components/transactions/transaction-list';
+import { Sun } from 'lucide-react';
 
 export function DashboardClient() {
   const { getTodaysLog, endDay, transactions } = useAppStore();
@@ -21,24 +21,25 @@ export function DashboardClient() {
 
   if (!todaysLog) {
     return (
-      <div className="flex items-center justify-center h-[50vh]">
-        <Card className="w-full max-w-sm text-center">
-          <CardHeader>
-            <CardTitle>Start Your Day</CardTitle>
-            <CardDescription>Begin a new daily log to track your sales and expenses.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <StartDayDialog />
-          </CardContent>
-        </Card>
+      <div className="flex items-center justify-center h-[70vh]">
+        <div className="text-center space-y-4 animate-fade-in">
+          <div className="inline-flex items-center justify-center h-24 w-24 rounded-full bg-primary/10 mb-4">
+             <Sun className="h-12 w-12 text-primary" />
+          </div>
+          <h1 className="text-3xl font-headline font-bold">Good Morning!</h1>
+          <p className="text-muted-foreground max-w-sm mx-auto">
+            Ready to make today count? Start your day to begin tracking your business performance.
+          </p>
+          <StartDayDialog />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold tracking-tight">Today's Summary</h2>
+        <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive">End Day</Button>
@@ -60,10 +61,15 @@ export function DashboardClient() {
       
       <DailySummaryCard log={todaysLog} />
       
-      <div>
-        <h3 className="text-xl font-bold tracking-tight mb-4">Today's Transactions</h3>
-        <TransactionList transactions={todaysTransactions} />
-      </div>
+      <Card>
+        <CardHeader>
+            <CardTitle className="font-headline text-xl">Today's Transactions</CardTitle>
+            <CardDescription>A list of all sales and expenses for today.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <TransactionList transactions={todaysTransactions} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
