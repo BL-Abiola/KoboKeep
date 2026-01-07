@@ -1,3 +1,4 @@
+
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DailyLog } from '@/lib/types';
@@ -11,8 +12,8 @@ interface DailySummaryCardProps {
   log: DailyLog;
 }
 
-const StatCard = ({ title, value, icon: Icon, iconClassName }: { title: string; value: string; icon: React.ElementType; iconClassName?: string }) => (
-  <Card>
+const StatCard = ({ title, value, icon: Icon, iconClassName, className }: { title: string; value: string; icon: React.ElementType; iconClassName?: string, className?: string }) => (
+  <Card className={className}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
       <Icon className={cn("h-4 w-4 text-muted-foreground transition-colors duration-300", iconClassName)} />
@@ -36,7 +37,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalSales > prevSales.current) {
       setHighlightSale(true);
-      const timer = setTimeout(() => setHighlightSale(false), 2500);
+      const timer = setTimeout(() => setHighlightSale(false), 2000);
       return () => clearTimeout(timer);
     }
     prevSales.current = log.totalSales;
@@ -45,7 +46,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   useEffect(() => {
     if (log.totalExpenses > prevExpenses.current) {
       setHighlightExpense(true);
-      const timer = setTimeout(() => setHighlightExpense(false), 2500);
+      const timer = setTimeout(() => setHighlightExpense(false), 2000);
       return () => clearTimeout(timer);
     }
     prevExpenses.current = log.totalExpenses;
@@ -64,13 +65,13 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
         title="Total Sales"
         value={formatCurrency(log.totalSales)}
         icon={TrendingUp}
-        iconClassName={cn({'text-green-500': highlightSale})}
+        className={cn({'animate-blink-sale': highlightSale})}
       />
       <StatCard 
         title="Total Expenses"
         value={formatCurrency(log.totalExpenses)}
         icon={TrendingDown}
-        iconClassName={cn({'text-red-500': highlightExpense})}
+        className={cn({'animate-blink-expense': highlightExpense})}
       />
       <StatCard 
         title="Net Profit"
