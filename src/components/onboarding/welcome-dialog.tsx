@@ -17,7 +17,7 @@ import { Progress } from '../ui/progress';
 const onboardingSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   businessName: z.string().min(1, 'Business name is required'),
-  currency: z.string(),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type OnboardingValues = z.infer<typeof onboardingSchema>;
@@ -26,12 +26,7 @@ const steps = [
   {
     title: "Welcome to KoboKeep!",
     description: "Let's get your profile set up.",
-    fields: ['name', 'businessName'],
-  },
-  {
-    title: 'Choose Your Currency',
-    description: "Select the currency you'll be transacting in.",
-    fields: ['currency'],
+    fields: ['name', 'businessName', 'currency'],
   },
 ];
 
@@ -47,21 +42,6 @@ export function WelcomeDialog() {
       currency: settings.currency,
     },
   });
-
-  const handleNext = async () => {
-    const isValid = await form.trigger(steps[step].fields as any);
-    if (isValid) {
-      if (step < steps.length - 1) {
-        setStep(step + 1);
-      }
-    }
-  };
-
-  const handlePrevious = () => {
-    if (step > 0) {
-      setStep(step - 1);
-    }
-  };
 
   const onSubmit = (values: OnboardingValues) => {
     updateSettings({
@@ -84,7 +64,6 @@ export function WelcomeDialog() {
             </div>
             <h1 className="text-2xl font-semibold font-headline">KoboKeep</h1>
           </div>
-          <Progress value={(step + 1) / steps.length * 100} className="w-full h-2" />
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,25 +73,20 @@ export function WelcomeDialog() {
                     <CardDescription>{steps[step].description}</CardDescription>
                 </div>
 
-              {step === 0 && (
-                <>
-                  <FormField control={form.control} name="name" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Your Name</FormLabel>
-                      <FormControl><Input placeholder="e.g. John Doe" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="businessName" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Business Name</FormLabel>
-                      <FormControl><Input placeholder="e.g. John's Coffee Shop" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                </>
-              )}
-              {step === 1 && (
+                <FormField control={form.control} name="name" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Name</FormLabel>
+                    <FormControl><Input placeholder="e.g. John Doe" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={form.control} name="businessName" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Business Name</FormLabel>
+                    <FormControl><Input placeholder="e.g. John's Coffee Shop" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
                 <FormField control={form.control} name="currency" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Currency</FormLabel>
@@ -136,17 +110,10 @@ export function WelcomeDialog() {
                     <FormMessage />
                   </FormItem>
                 )} />
-              )}
+              
             </CardContent>
             <CardFooter className="flex justify-between">
-              {step > 0 && <Button type="button" variant="outline" onClick={handlePrevious}>Previous</Button>}
-              <div className={step === 0 ? "w-full" : ""}>
-                {step < steps.length - 1 ? (
-                    <Button type="button" onClick={handleNext} className="w-full">Next</Button>
-                ) : (
-                    <Button type="submit" className="w-full">Get Started</Button>
-                )}
-              </div>
+              <Button type="submit" className="w-full">Get Started</Button>
             </CardFooter>
           </form>
         </Form>
