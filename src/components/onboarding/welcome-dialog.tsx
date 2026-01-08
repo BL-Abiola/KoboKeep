@@ -125,7 +125,10 @@ export function WelcomeDialog() {
                         <SelectContent>
                             {Object.entries(CURRENCIES).map(([code, { name, symbol }]) => (
                             <SelectItem key={code} value={code}>
-                                {symbol} - {name} ({code})
+                                <div className="flex items-center gap-2">
+                                  <span className="font-bold">{symbol}</span>
+                                  <span>{name} ({code})</span>
+                                </div>
                             </SelectItem>
                             ))}
                         </SelectContent>
