@@ -283,14 +283,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   
   const resetData = () => {
-    const defaultState = {
-        ...initialState,
-        settings: {
-            ...initialState.settings,
-            profile: state.settings.profile // Keep profile settings
-        }
-    };
-    setState(defaultState);
+    setState(initialState);
   };
   
   const toggleTransactionSheet = (open: boolean, transactionId: string | null = null) => {
