@@ -1,3 +1,4 @@
+
 'use client';
 import { MainLayout } from "@/components/layout/main-layout";
 import { TransactionList } from "@/components/transactions/transaction-list";
@@ -21,7 +22,7 @@ export default function TransactionsPage() {
         <MainLayout title="Transaction History">
              <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
                 <WeekNavigator selectedDate={selectedDate} onDateChange={setSelectedDate} />
-                <TransactionList transactions={dailyTransactions} showDate={false} />
+                <TransactionList transactions={dailyTransactions} showDate={false} key={transactions.length} />
              </div>
         </MainLayout>
     );
