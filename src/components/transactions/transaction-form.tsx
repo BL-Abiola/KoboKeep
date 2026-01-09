@@ -39,7 +39,6 @@ function TransactionFormContent() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: 'income',
-      amount: 0,
       paymentMethod: 'cash',
       description: '',
     },
@@ -56,7 +55,7 @@ function TransactionFormContent() {
     } else {
       form.reset({
         type: 'income',
-        amount: 0,
+        amount: undefined,
         paymentMethod: 'cash',
         description: '',
       });
@@ -125,7 +124,7 @@ function TransactionFormContent() {
                   <FormItem>
                     <FormLabel>Amount</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0.00" {...field} />
+                      <Input type="number" placeholder="0.00" {...field} onChange={e => field.onChange(e.target.valueAsNumber)} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
