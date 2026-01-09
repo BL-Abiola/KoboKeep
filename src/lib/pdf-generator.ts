@@ -26,12 +26,15 @@ export const generateDailyLogReport = (
   doc.text(`Business: ${settings.profile.businessName}`, 14, 32);
   doc.text(`Status: ${log.status}`, 14, 38);
 
+  const profit = log.totalIncome - log.totalExpenses;
+  const closingCash = log.openingCash + log.cashIncome - log.cashExpenses;
+
   const summaryData = [
     ['Opening Cash', formatCurrency(log.openingCash)],
     ['Total Income', formatCurrency(log.totalIncome)],
     ['Total Expenses', formatCurrency(log.totalExpenses)],
-    ['Profit', formatCurrency(log.profit ?? 0)],
-    ['Closing Cash', formatCurrency(log.closingCash ?? (log.openingCash + (log.profit ?? 0)))],
+    ['Profit', formatCurrency(profit)],
+    ['Closing Cash', formatCurrency(log.closingCash ?? closingCash)],
   ];
 
   autoTable(doc, {

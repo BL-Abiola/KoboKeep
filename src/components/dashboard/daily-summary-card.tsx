@@ -58,7 +58,7 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   };
   
   const profit = log.totalIncome - log.totalExpenses;
-  const cashOnHand = log.openingCash + profit;
+  const cashOnHand = log.openingCash + log.cashIncome - log.cashExpenses;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

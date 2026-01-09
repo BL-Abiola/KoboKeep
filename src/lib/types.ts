@@ -20,6 +20,8 @@ export type DailyLog = {
   transactions: Transaction['id'][];
   totalIncome: number;
   totalExpenses: number;
+  cashIncome: number;
+  cashExpenses: number;
   profit?: number;
   status: 'open' | 'closed';
 };

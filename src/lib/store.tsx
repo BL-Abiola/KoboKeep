@@ -65,6 +65,13 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             } 
           } 
         };
+        // Migration for older states that don't have cashIncome/cashExpenses
+        mergedState.dailyLogs = mergedState.dailyLogs.map((log: DailyLog) => ({
+            ...log,
+            cashIncome: log.cashIncome ?? 0,
+            cashExpenses: log.cashExpenses ?? 0,
+        }));
+
         setState(mergedState);
       }
     } catch (error) {
@@ -101,6 +108,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       transactions: [],
       totalIncome: 0,
       totalExpenses: 0,
+      cashIncome: 0,
+      cashExpenses: 0,
     };
     setState(prev => ({ ...prev, dailyLogs: [...prev.dailyLogs, newLog] }));
   };
@@ -113,7 +122,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.id === todaysLog.id) {
           const profit = log.totalIncome - log.totalExpenses;
-          const closingCash = log.openingCash + profit;
+          const closingCash = log.openingCash + log.cashIncome - log.cashExpenses;
           return { ...log, status: 'closed', profit, closingCash };
         }
         return log;
@@ -137,12 +146,20 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setState(prev => {
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.id === todaysLog.id) {
-          return {
-            ...log,
-            transactions: [...log.transactions, newTransaction.id],
-            totalIncome: transactionData.type === 'income' ? log.totalIncome + transactionData.amount : log.totalIncome,
-            totalExpenses: transactionData.type === 'expense' ? log.totalExpenses + transactionData.amount : log.totalExpenses,
-          };
+            const newLog = { ...log, transactions: [...log.transactions, newTransaction.id] };
+
+            if (newTransaction.type === 'income') {
+                newLog.totalIncome += newTransaction.amount;
+                if (newTransaction.paymentMethod === 'cash') {
+                    newLog.cashIncome += newTransaction.amount;
+                }
+            } else {
+                newLog.totalExpenses += newTransaction.amount;
+                if (newTransaction.paymentMethod === 'cash') {
+                    newLog.cashExpenses += newTransaction.amount;
+                }
+            }
+            return newLog;
         }
         return log;
       });
@@ -167,25 +184,29 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
       if (!oldTransaction) return prev;
       
-      const amountDifference = updatedTransaction.amount - oldTransaction.amount;
-      const typeChanged = updatedTransaction.type !== oldTransaction.type;
-      
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.transactions.includes(updatedTransaction.id)) {
-            let { totalIncome, totalExpenses } = log;
+            let { totalIncome, totalExpenses, cashIncome, cashExpenses } = log;
             
-            if (typeChanged) {
-                if (oldTransaction!.type === 'income') totalIncome -= oldTransaction!.amount;
-                else totalExpenses -= oldTransaction!.amount;
-
-                if (updatedTransaction.type === 'income') totalIncome += updatedTransaction.amount;
-                else totalExpenses += updatedTransaction.amount;
+            // Revert old transaction's values
+            if (oldTransaction!.type === 'income') {
+                totalIncome -= oldTransaction!.amount;
+                if (oldTransaction!.paymentMethod === 'cash') cashIncome -= oldTransaction!.amount;
             } else {
-                if (updatedTransaction.type === 'income') totalIncome += amountDifference;
-                else totalExpenses += amountDifference;
+                totalExpenses -= oldTransaction!.amount;
+                if (oldTransaction!.paymentMethod === 'cash') cashExpenses -= oldTransaction!.amount;
             }
 
-            return { ...log, totalIncome, totalExpenses };
+            // Apply new transaction's values
+            if (updatedTransaction.type === 'income') {
+                totalIncome += updatedTransaction.amount;
+                if (updatedTransaction.paymentMethod === 'cash') cashIncome += updatedTransaction.amount;
+            } else {
+                totalExpenses += updatedTransaction.amount;
+                if (updatedTransaction.paymentMethod === 'cash') cashExpenses += updatedTransaction.amount;
+            }
+
+            return { ...log, totalIncome, totalExpenses, cashIncome, cashExpenses };
         }
         return log;
       });
@@ -203,12 +224,18 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.transactions.includes(transactionId)) {
-          return {
+          const newLog = {
             ...log,
             transactions: log.transactions.filter(id => id !== transactionId),
-            totalIncome: transactionToDelete.type === 'income' ? log.totalIncome - transactionToDelete.amount : log.totalIncome,
-            totalExpenses: transactionToDelete.type === 'expense' ? log.totalExpenses - transactionToDelete.amount : log.totalExpenses,
           };
+          if (transactionToDelete.type === 'income') {
+            newLog.totalIncome -= transactionToDelete.amount;
+            if(transactionToDelete.paymentMethod === 'cash') newLog.cashIncome -= transactionToDelete.amount;
+          } else {
+            newLog.totalExpenses -= transactionToDelete.amount;
+            if(transactionToDelete.paymentMethod === 'cash') newLog.cashExpenses -= transactionToDelete.amount;
+          }
+          return newLog;
         }
         return log;
       });
@@ -259,6 +286,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
                     closingCash: log.closingCash ? convert(log.closingCash) : undefined,
                     totalIncome: convert(log.totalIncome),
                     totalExpenses: convert(log.totalExpenses),
+                    cashIncome: log.cashIncome ? convert(log.cashIncome) : 0,
+                    cashExpenses: log.cashExpenses ? convert(log.cashExpenses) : 0,
                     profit: log.profit ? convert(log.profit) : undefined,
                 }));
 
@@ -283,7 +312,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   
   const resetData = () => {
-    setState(initialState);
+    setState({ ...initialState, settings: { ...initialState.settings, onboardingCompleted: false }});
   };
   
   const toggleTransactionSheet = (open: boolean, transactionId: string | null = null) => {
