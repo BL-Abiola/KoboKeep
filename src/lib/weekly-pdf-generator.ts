@@ -1,3 +1,4 @@
+
 'use client';
 
 import jsPDF from 'jspdf';
@@ -10,7 +11,7 @@ interface WeeklySummary {
   weekId: string;
   startDate: Date;
   endDate: Date;
-  totalSales: number;
+  totalIncome: number;
   totalExpenses: number;
   profit: number;
   transactions: Transaction[];
@@ -33,7 +34,7 @@ export const generateWeeklyReport = (
   doc.text(`Business: ${settings.profile.businessName}`, 14, 32);
 
   const summaryData = [
-    ['Total Sales', formatCurrency(week.totalSales)],
+    ['Total Income', formatCurrency(week.totalIncome)],
     ['Total Expenses', formatCurrency(week.totalExpenses)],
     ['Net Profit', formatCurrency(week.profit)],
   ];

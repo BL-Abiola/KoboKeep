@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -16,21 +17,21 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
   const currencySymbol = CURRENCIES[settings.currency]?.symbol || '$';
 
   const chartData = React.useMemo(() => {
-    const weeklyData: { [day: string]: { sales: number; expenses: number } } = {
-        'Mon': { sales: 0, expenses: 0 },
-        'Tue': { sales: 0, expenses: 0 },
-        'Wed': { sales: 0, expenses: 0 },
-        'Thu': { sales: 0, expenses: 0 },
-        'Fri': { sales: 0, expenses: 0 },
-        'Sat': { sales: 0, expenses: 0 },
-        'Sun': { sales: 0, expenses: 0 },
+    const weeklyData: { [day: string]: { income: number; expenses: number } } = {
+        'Mon': { income: 0, expenses: 0 },
+        'Tue': { income: 0, expenses: 0 },
+        'Wed': { income: 0, expenses: 0 },
+        'Thu': { income: 0, expenses: 0 },
+        'Fri': { income: 0, expenses: 0 },
+        'Sat': { income: 0, expenses: 0 },
+        'Sun': { income: 0, expenses: 0 },
     };
 
     data.forEach((transaction) => {
       const day = format(new Date(transaction.date), 'E'); // E gives short day name e.g., 'Mon'
       if (weeklyData[day]) {
-        if (transaction.type === 'sale') {
-          weeklyData[day].sales += transaction.amount;
+        if (transaction.type === 'income') {
+          weeklyData[day].income += transaction.amount;
         } else {
           weeklyData[day].expenses += transaction.amount;
         }
@@ -69,7 +70,7 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
             formatter={(value: number) => `${currencySymbol}${value.toFixed(2)}`}
           />
           <Legend wrapperStyle={{ fontSize: '14px' }}/>
-          <Bar dataKey="sales" fill="hsl(var(--primary))" name="Sales" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="income" fill="hsl(var(--primary))" name="Income" radius={[4, 4, 0, 0]} />
           <Bar dataKey="expenses" fill="hsl(var(--destructive))" name="Expenses" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>

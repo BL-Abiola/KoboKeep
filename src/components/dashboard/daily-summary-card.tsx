@@ -2,7 +2,7 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DailyLog } from '@/lib/types';
-import { TrendingUp, TrendingDown, Banknote, Landmark, Wallet } from 'lucide-react';
+import { TrendingUp, TrendingDown, Landmark, Wallet } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { CURRENCIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -28,20 +28,20 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
   const { settings } = useAppStore();
   const currencySymbol = CURRENCIES[settings.currency]?.symbol || '$';
   
-  const [highlightSale, setHighlightSale] = useState(false);
+  const [highlightIncome, setHighlightIncome] = useState(false);
   const [highlightExpense, setHighlightExpense] = useState(false);
 
-  const prevSales = useRef(log.totalSales);
+  const prevIncome = useRef(log.totalIncome);
   const prevExpenses = useRef(log.totalExpenses);
 
   useEffect(() => {
-    if (log.totalSales > prevSales.current) {
-      setHighlightSale(true);
-      const timer = setTimeout(() => setHighlightSale(false), 3000);
+    if (log.totalIncome > prevIncome.current) {
+      setHighlightIncome(true);
+      const timer = setTimeout(() => setHighlightIncome(false), 3000);
       return () => clearTimeout(timer);
     }
-    prevSales.current = log.totalSales;
-  }, [log.totalSales]);
+    prevIncome.current = log.totalIncome;
+  }, [log.totalIncome]);
 
   useEffect(() => {
     if (log.totalExpenses > prevExpenses.current) {
@@ -57,16 +57,16 @@ export function DailySummaryCard({ log }: DailySummaryCardProps) {
     return `${currencySymbol}${new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount)}`;
   };
   
-  const profit = log.totalSales - log.totalExpenses;
+  const profit = log.totalIncome - log.totalExpenses;
   const cashOnHand = log.openingCash + profit;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard 
-        title="Total Sales"
-        value={formatCurrency(log.totalSales)}
+        title="Total Income"
+        value={formatCurrency(log.totalIncome)}
         icon={TrendingUp}
-        iconClassName={cn({'animate-blink-sale text-green-500': highlightSale})}
+        iconClassName={cn({'animate-blink-sale text-green-500': highlightIncome})}
       />
       <StatCard 
         title="Total Expenses"

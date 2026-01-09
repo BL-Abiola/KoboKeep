@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { Transaction } from '@/lib/types';
@@ -61,14 +62,14 @@ export function TransactionList({ transactions, showDate = false }: TransactionL
                 {showDate && <TableCell>{format(new Date(t.date), 'MMM dd, yyyy')}</TableCell>}
                 <TableCell className="font-medium">{t.description}</TableCell>
                 <TableCell>
-                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.type === 'sale' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.type === 'income' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                     {t.type}
                    </span>
                 </TableCell>
                 <TableCell className="hidden md:table-cell capitalize">{t.paymentMethod}</TableCell>
                 <TableCell className="hidden md:table-cell text-muted-foreground">{format(new Date(t.date), 'p')}</TableCell>
-                <TableCell className={`text-right font-semibold ${t.type === 'sale' ? 'text-green-600' : 'text-red-600'}`}>
-                  {t.type === 'sale' ? '+' : '-'}
+                <TableCell className={`text-right font-semibold ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                  {t.type === 'income' ? '+' : '-'}
                   {currencySymbol}
                   {t.amount.toFixed(2)}
                 </TableCell>

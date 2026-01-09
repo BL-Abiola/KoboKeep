@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useMemo, useState } from 'react';
 import { useAppStore } from '@/lib/store';
@@ -56,7 +57,7 @@ function DailyReports() {
                     </AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-2 p-4 border rounded-md">
-                            <div className="flex justify-between"><span className="text-muted-foreground">Total Sales:</span> <span>{formatCurrency(log.totalSales)}</span></div>
+                            <div className="flex justify-between"><span className="text-muted-foreground">Total Income:</span> <span>{formatCurrency(log.totalIncome)}</span></div>
                             <div className="flex justify-between"><span className="text-muted-foreground">Total Expenses:</span> <span>{formatCurrency(log.totalExpenses)}</span></div>
                             <div className="flex justify-between font-bold"><span >Profit:</span> <span>{formatCurrency(log.profit)}</span></div>
                             <div className="pt-4">

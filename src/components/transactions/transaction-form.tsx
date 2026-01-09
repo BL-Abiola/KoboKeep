@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,7 +24,7 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
-  type: z.enum(['sale', 'expense']),
+  type: z.enum(['income', 'expense']),
   amount: z.coerce.number().min(0.01, 'Amount must be greater than 0.'),
   paymentMethod: z.enum(['cash', 'card', 'transfer']),
   description: z.string().min(1, 'Description is required.').max(100),
@@ -37,7 +38,7 @@ function TransactionFormContent() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: 'sale',
+      type: 'income',
       amount: 0,
       paymentMethod: 'cash',
       description: '',
@@ -54,7 +55,7 @@ function TransactionFormContent() {
       });
     } else {
       form.reset({
-        type: 'sale',
+        type: 'income',
         amount: 0,
         paymentMethod: 'cash',
         description: '',
@@ -109,7 +110,7 @@ function TransactionFormContent() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="sale">Sale</SelectItem>
+                        <SelectItem value="income">Income</SelectItem>
                         <SelectItem value="expense">Expense</SelectItem>
                       </SelectContent>
                     </Select>

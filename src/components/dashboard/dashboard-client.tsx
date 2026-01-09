@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useMemo } from 'react';
 import { useAppStore } from '@/lib/store';
@@ -80,7 +81,7 @@ export function DashboardClient() {
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-xl">Weekly Performance</CardTitle>
-                <CardDescription>A visual summary of this week's sales and expenses.</CardDescription>
+                <CardDescription>A visual summary of this week's income and expenses.</CardDescription>
             </CardHeader>
             <CardContent className="px-2">
                 <WeeklyChart data={weeklyTransactions} />
@@ -90,7 +91,7 @@ export function DashboardClient() {
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-xl">Today's Transactions</CardTitle>
-                <CardDescription>A list of all sales and expenses for today.</CardDescription>
+                <CardDescription>A list of all income and expenses for today.</CardDescription>
             </CardHeader>
             <CardContent className="p-0">
                 <TransactionList transactions={todaysTransactions} />

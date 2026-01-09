@@ -1,3 +1,4 @@
+
 'use client';
 
 import jsPDF from 'jspdf';
@@ -27,7 +28,7 @@ export const generateDailyLogReport = (
 
   const summaryData = [
     ['Opening Cash', formatCurrency(log.openingCash)],
-    ['Total Sales', formatCurrency(log.totalSales)],
+    ['Total Income', formatCurrency(log.totalIncome)],
     ['Total Expenses', formatCurrency(log.totalExpenses)],
     ['Profit', formatCurrency(log.profit ?? 0)],
     ['Closing Cash', formatCurrency(log.closingCash ?? (log.openingCash + (log.profit ?? 0)))],

@@ -1,5 +1,5 @@
 
-export type TransactionType = 'sale' | 'expense';
+export type TransactionType = 'income' | 'expense';
 export type PaymentMethod = 'cash' | 'card' | 'transfer';
 export type DebtType = 'owed_to_me' | 'i_owe';
 
@@ -18,7 +18,7 @@ export type DailyLog = {
   openingCash: number;
   closingCash?: number;
   transactions: Transaction['id'][];
-  totalSales: number;
+  totalIncome: number;
   totalExpenses: number;
   profit?: number;
   status: 'open' | 'closed';

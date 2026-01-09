@@ -99,7 +99,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       openingCash,
       status: 'open',
       transactions: [],
-      totalSales: 0,
+      totalIncome: 0,
       totalExpenses: 0,
     };
     setState(prev => ({ ...prev, dailyLogs: [...prev.dailyLogs, newLog] }));
@@ -112,7 +112,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     setState(prev => {
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.id === todaysLog.id) {
-          const profit = log.totalSales - log.totalExpenses;
+          const profit = log.totalIncome - log.totalExpenses;
           const closingCash = log.openingCash + profit;
           return { ...log, status: 'closed', profit, closingCash };
         }
@@ -140,7 +140,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
           return {
             ...log,
             transactions: [...log.transactions, newTransaction.id],
-            totalSales: transactionData.type === 'sale' ? log.totalSales + transactionData.amount : log.totalSales,
+            totalIncome: transactionData.type === 'income' ? log.totalIncome + transactionData.amount : log.totalIncome,
             totalExpenses: transactionData.type === 'expense' ? log.totalExpenses + transactionData.amount : log.totalExpenses,
           };
         }
@@ -172,20 +172,20 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       
       const updatedLogs = prev.dailyLogs.map(log => {
         if (log.transactions.includes(updatedTransaction.id)) {
-            let { totalSales, totalExpenses } = log;
+            let { totalIncome, totalExpenses } = log;
             
             if (typeChanged) {
-                if (oldTransaction!.type === 'sale') totalSales -= oldTransaction!.amount;
+                if (oldTransaction!.type === 'income') totalIncome -= oldTransaction!.amount;
                 else totalExpenses -= oldTransaction!.amount;
 
-                if (updatedTransaction.type === 'sale') totalSales += updatedTransaction.amount;
+                if (updatedTransaction.type === 'income') totalIncome += updatedTransaction.amount;
                 else totalExpenses += updatedTransaction.amount;
             } else {
-                if (updatedTransaction.type === 'sale') totalSales += amountDifference;
+                if (updatedTransaction.type === 'income') totalIncome += amountDifference;
                 else totalExpenses += amountDifference;
             }
 
-            return { ...log, totalSales, totalExpenses };
+            return { ...log, totalIncome, totalExpenses };
         }
         return log;
       });
@@ -206,7 +206,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
           return {
             ...log,
             transactions: log.transactions.filter(id => id !== transactionId),
-            totalSales: transactionToDelete.type === 'sale' ? log.totalSales - transactionToDelete.amount : log.totalSales,
+            totalIncome: transactionToDelete.type === 'income' ? log.totalIncome - transactionToDelete.amount : log.totalIncome,
             totalExpenses: transactionToDelete.type === 'expense' ? log.totalExpenses - transactionToDelete.amount : log.totalExpenses,
           };
         }
@@ -257,7 +257,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
                     ...log,
                     openingCash: convert(log.openingCash),
                     closingCash: log.closingCash ? convert(log.closingCash) : undefined,
-                    totalSales: convert(log.totalSales),
+                    totalIncome: convert(log.totalIncome),
                     totalExpenses: convert(log.totalExpenses),
                     profit: log.profit ? convert(log.profit) : undefined,
                 }));

@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useMemo } from 'react';
 import { useAppStore } from '@/lib/store';
@@ -13,7 +14,7 @@ interface WeeklySummary {
   weekId: string;
   startDate: Date;
   endDate: Date;
-  totalSales: number;
+  totalIncome: number;
   totalExpenses: number;
   profit: number;
   transactions: Transaction[];
@@ -43,19 +44,19 @@ export function WeeklyReports() {
           weekId,
           startDate,
           endDate,
-          totalSales: 0,
+          totalIncome: 0,
           totalExpenses: 0,
           profit: 0,
           transactions: [],
         };
       }
 
-      if (t.type === 'sale') {
-        acc[weekId].totalSales += t.amount;
+      if (t.type === 'income') {
+        acc[weekId].totalIncome += t.amount;
       } else {
         acc[weekId].totalExpenses += t.amount;
       }
-      acc[weekId].profit = acc[weekId].totalSales - acc[weekId].totalExpenses;
+      acc[weekId].profit = acc[weekId].totalIncome - acc[weekId].totalExpenses;
       acc[weekId].transactions.push(t);
       return acc;
     }, {} as Record<string, WeeklySummary>);
@@ -97,7 +98,7 @@ export function WeeklyReports() {
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2 p-4 border rounded-md">
-              <div className="flex justify-between"><span className="text-muted-foreground">Total Sales:</span> <span>{formatCurrency(week.totalSales)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Total Income:</span> <span>{formatCurrency(week.totalIncome)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Total Expenses:</span> <span>{formatCurrency(week.totalExpenses)}</span></div>
               <div className="flex justify-between font-bold"><span>Profit:</span> <span>{formatCurrency(week.profit)}</span></div>
               <div className="pt-4">
