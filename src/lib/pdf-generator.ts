@@ -68,5 +68,5 @@ export const generateDailyLogReport = (
   }
 
 
-  doc.save(`isuna-report-${log.id}.pdf`);
+  doc.save(`Kobokeep-report-${log.id}.pdf`);
 };

@@ -91,5 +91,5 @@ export const generateWeeklyReport = (
     }
   }
 
-  doc.save(`isuna-weekly-report-${week.weekId}.pdf`);
+  doc.save(`Kobokeep-weekly-report-${week.weekId}.pdf`);
 };
