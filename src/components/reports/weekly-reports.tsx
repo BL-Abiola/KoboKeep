@@ -5,7 +5,7 @@ import { useAppStore } from '@/lib/store';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
-import { format, startOfWeek, getWeek } from 'date-fns';
+import { format, startOfWeek, getWeek, isPast } from 'date-fns';
 import { CURRENCIES } from '@/lib/constants';
 import { Transaction } from '@/lib/types';
 import { generateWeeklyReport } from '@/lib/weekly-pdf-generator';
@@ -21,14 +21,18 @@ interface WeeklySummary {
 }
 
 export function WeeklyReports() {
-  const { transactions, settings } = useAppStore();
+  const { transactions, dailyLogs, settings } = useAppStore();
 
   const weeklyData = useMemo(() => {
-    const closedTransactions = transactions.filter(t => {
-        const today = new Date();
-        const logDate = new Date(t.date);
-        return logDate < today || !format(logDate, 'yyyy-MM-dd').includes(format(today, 'yyyy-MM-dd'));
-    });
+    // Get IDs of closed logs
+    const closedLogDates = new Set(
+      dailyLogs.filter(log => log.status === 'closed').map(log => format(new Date(log.date), 'yyyy-MM-dd'))
+    );
+
+    // Only include transactions from closed days
+    const closedTransactions = transactions.filter(t => 
+      closedLogDates.has(format(new Date(t.date), 'yyyy-MM-dd'))
+    );
 
     const groupedByWeek = closedTransactions.reduce((acc, t) => {
       const transactionDate = new Date(t.date);
@@ -61,8 +65,12 @@ export function WeeklyReports() {
       return acc;
     }, {} as Record<string, WeeklySummary>);
 
-    return Object.values(groupedByWeek).sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
-  }, [transactions]);
+    // Filter out the current week and sort by date
+    return Object.values(groupedByWeek)
+      .filter(week => isPast(week.endDate))
+      .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+      
+  }, [transactions, dailyLogs]);
 
   const currencySymbol = CURRENCIES[settings.currency]?.symbol || '$';
 
@@ -77,7 +85,7 @@ export function WeeklyReports() {
   if (weeklyData.length === 0) {
     return (
       <div className="p-6 text-center text-muted-foreground">
-        No weekly data available to generate reports.
+        No completed weekly reports are available yet.
       </div>
     );
   }
