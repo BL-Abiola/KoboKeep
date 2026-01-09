@@ -25,7 +25,7 @@ import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
-  amount: z.coerce.number().min(0.01, 'Amount must be greater than 0.'),
+  amount: z.coerce.number().min(0.01, 'Amount must be greater than 0.').optional().or(z.literal('')),
   paymentMethod: z.enum(['cash', 'card', 'transfer']),
   description: z.string().min(1, 'Description is required.').max(100),
 });
@@ -39,6 +39,7 @@ function TransactionFormContent() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: 'income',
+      amount: '',
       paymentMethod: 'cash',
       description: '',
     },
@@ -55,7 +56,7 @@ function TransactionFormContent() {
     } else {
       form.reset({
         type: 'income',
-        amount: undefined,
+        amount: '',
         paymentMethod: 'cash',
         description: '',
       });
@@ -65,11 +66,16 @@ function TransactionFormContent() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
+      const transactionData = { ...values, amount: Number(values.amount) };
+       if (isNaN(transactionData.amount) || transactionData.amount <= 0) {
+        form.setError('amount', { message: 'Amount must be a number greater than 0.' });
+        return;
+      }
       if (editingTransaction) {
-        updateTransaction({ ...editingTransaction, ...values });
+        updateTransaction({ ...editingTransaction, ...transactionData });
         toast({ title: 'Success', description: 'Transaction updated.' });
       } else {
-        addTransaction(values);
+        addTransaction(transactionData);
         toast({ title: 'Success', description: 'Transaction added.' });
       }
       toggleTransactionSheet(false);
@@ -124,7 +130,7 @@ function TransactionFormContent() {
                   <FormItem>
                     <FormLabel>Amount</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0.00" {...field} onChange={e => field.onChange(e.target.valueAsNumber)} />
+                      <Input type="number" placeholder="0.00" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
