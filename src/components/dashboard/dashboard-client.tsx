@@ -8,7 +8,7 @@ import { DailySummaryCard } from './daily-summary-card';
 import { StartDayDialog } from './start-day-dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { TransactionList } from '@/components/transactions/transaction-list';
-import { Sun } from 'lucide-react';
+import { Sun, Sunrise } from 'lucide-react';
 import { WeeklyChart } from './weekly-chart';
 import { subDays, startOfWeek, endOfWeek } from 'date-fns';
 
@@ -35,17 +35,24 @@ export function DashboardClient() {
 
   if (!todaysLog) {
     return (
-      <div className="flex items-center justify-center h-[70vh]">
-        <div className="text-center space-y-4 animate-fade-in">
-          <div className="inline-flex items-center justify-center h-24 w-24 rounded-full bg-primary/10 mb-4">
-             <Sun className="h-12 w-12 text-primary" />
-          </div>
-          <h1 className="text-3xl font-headline font-bold">Good Morning!</h1>
-          <p className="text-muted-foreground max-w-sm mx-auto">
-            Ready to make today count? Start your day to begin tracking your business performance.
-          </p>
-          <StartDayDialog />
-        </div>
+      <div className="flex items-center justify-center h-[70vh] p-4">
+        <Card className="w-full max-w-lg animate-fade-in overflow-hidden">
+            <div className="grid md:grid-cols-2 items-center">
+                <div className="p-8 space-y-4">
+                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-4">
+                        <Sunrise className="h-10 w-10 text-primary" />
+                    </div>
+                    <h1 className="text-3xl font-headline font-bold">Good Morning!</h1>
+                    <p className="text-muted-foreground">
+                        Ready to make today count? Start your day to begin tracking your business performance.
+                    </p>
+                    <StartDayDialog />
+                </div>
+                <div className="hidden md:flex h-full w-full bg-primary/10 items-center justify-center">
+                    <Sun className="h-32 w-32 text-primary/20" />
+                </div>
+            </div>
+        </Card>
       </div>
     );
   }
