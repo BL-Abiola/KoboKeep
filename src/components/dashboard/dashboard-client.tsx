@@ -10,11 +10,11 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { TransactionList } from '@/components/transactions/transaction-list';
 import { Sun, Sunrise } from 'lucide-react';
 import { WeeklyChart } from './weekly-chart';
-import { subDays, startOfWeek, endOfWeek } from 'date-fns';
+import { startOfWeek, endOfWeek } from 'date-fns';
+import { DailyLog } from '@/lib/types';
 
-export function DashboardClient() {
-  const { getTodaysLog, endDay, transactions } = useAppStore();
-  const todaysLog = getTodaysLog();
+export function DashboardClient({ todaysLog }: { todaysLog: DailyLog | undefined}) {
+  const { endDay, transactions } = useAppStore();
 
   const todaysTransactions = useMemo(() => {
     if (!todaysLog) return [];

@@ -6,7 +6,8 @@ import { useAppStore } from "@/lib/store";
 import { WelcomeDialog } from "@/components/onboarding/welcome-dialog";
 
 export default function DashboardPage() {
-  const { settings } = useAppStore();
+  const { settings, getTodaysLog } = useAppStore();
+  const todaysLog = getTodaysLog();
 
   if (!settings.onboardingCompleted) {
     return <WelcomeDialog />;
@@ -15,7 +16,7 @@ export default function DashboardPage() {
   return (
     <MainLayout title="Dashboard">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-        <DashboardClient />
+        <DashboardClient todaysLog={todaysLog} />
       </div>
     </MainLayout>
   );

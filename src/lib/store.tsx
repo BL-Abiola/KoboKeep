@@ -26,7 +26,7 @@ const initialState: AppState = {
 };
 
 type StoreActions = {
-  getTodaysLog: () => DailyLog | undefined;
+  getTodaysLog: (currentState?: AppState) => DailyLog | undefined;
   startDay: (openingCash: number) => void;
   endDay: () => void;
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
@@ -90,32 +90,35 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     }
   }, [state, isInitialized]);
 
-  const getTodaysLog = useCallback(() => {
+  const getTodaysLog = useCallback((currentState: AppState = state) => {
     const todayId = format(new Date(), 'yyyy-MM-dd');
-    return state.dailyLogs.find(log => log.id === todayId && log.status === 'open');
-  }, [state.dailyLogs]);
+    return currentState.dailyLogs.find(log => log.id === todayId && log.status === 'open');
+  }, [state]);
 
   const startDay = (openingCash: number) => {
     const todayId = format(new Date(), 'yyyy-MM-dd');
-    if (state.dailyLogs.some(log => log.id === todayId)) {
-      return;
-    }
-    const newLog: DailyLog = {
-      id: todayId,
-      date: new Date().toISOString(),
-      openingCash,
-      status: 'open',
-      transactions: [],
-      totalIncome: 0,
-      totalExpenses: 0,
-      cashIncome: 0,
-      cashExpenses: 0,
-    };
-    setState(prev => ({ ...prev, dailyLogs: [...prev.dailyLogs, newLog] }));
+    
+    setState(prev => {
+        if (prev.dailyLogs.some(log => log.id === todayId)) {
+          return prev;
+        }
+        const newLog: DailyLog = {
+          id: todayId,
+          date: new Date().toISOString(),
+          openingCash,
+          status: 'open',
+          transactions: [],
+          totalIncome: 0,
+          totalExpenses: 0,
+          cashIncome: 0,
+          cashExpenses: 0,
+        };
+        return { ...prev, dailyLogs: [...prev.dailyLogs, newLog] };
+    });
   };
 
   const endDay = () => {
-    const todaysLog = getTodaysLog();
+    const todaysLog = getTodaysLog(state);
     if (!todaysLog) return;
 
     setState(prev => {
@@ -132,42 +135,43 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   };
 
   const addTransaction = (transactionData: Omit<Transaction, 'id' | 'date'>) => {
-    const todaysLog = getTodaysLog();
-    if (!todaysLog) {
-        throw new Error("Cannot add transaction without an active day log. Please start the day first.");
-    }
-
-    const newTransaction: Transaction = {
-      ...transactionData,
-      id: crypto.randomUUID(),
-      date: new Date().toISOString(),
-    };
-
     setState(prev => {
-      const updatedLogs = prev.dailyLogs.map(log => {
-        if (log.id === todaysLog.id) {
-            const newLog = { ...log, transactions: [...log.transactions, newTransaction.id] };
-
-            if (newTransaction.type === 'income') {
-                newLog.totalIncome += newTransaction.amount;
-                if (newTransaction.paymentMethod === 'cash') {
-                    newLog.cashIncome += newTransaction.amount;
-                }
-            } else {
-                newLog.totalExpenses += newTransaction.amount;
-                if (newTransaction.paymentMethod === 'cash') {
-                    newLog.cashExpenses += newTransaction.amount;
-                }
-            }
-            return newLog;
+        const todaysLog = getTodaysLog(prev);
+        if (!todaysLog) {
+            throw new Error("Cannot add transaction without an active day log. Please start the day first.");
         }
-        return log;
-      });
-      return {
-        ...prev,
-        transactions: [...prev.transactions, newTransaction],
-        dailyLogs: updatedLogs,
-      };
+
+        const newTransaction: Transaction = {
+          ...transactionData,
+          id: crypto.randomUUID(),
+          date: new Date().toISOString(),
+        };
+
+        const updatedLogs = prev.dailyLogs.map(log => {
+            if (log.id === todaysLog.id) {
+                const newLog = { ...log, transactions: [...log.transactions, newTransaction.id] };
+
+                if (newTransaction.type === 'income') {
+                    newLog.totalIncome += newTransaction.amount;
+                    if (newTransaction.paymentMethod === 'cash') {
+                        newLog.cashIncome += newTransaction.amount;
+                    }
+                } else {
+                    newLog.totalExpenses += newTransaction.amount;
+                    if (newTransaction.paymentMethod === 'cash') {
+                        newLog.cashExpenses += newTransaction.amount;
+                    }
+                }
+                return newLog;
+            }
+            return log;
+        });
+
+        return {
+            ...prev,
+            transactions: [...prev.transactions, newTransaction],
+            dailyLogs: updatedLogs,
+        };
     });
   };
 
