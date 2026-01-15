@@ -1,6 +1,6 @@
 
 'use client';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useAppStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -12,9 +12,22 @@ import { Sun, Sunrise } from 'lucide-react';
 import { WeeklyChart } from './weekly-chart';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { DailyLog } from '@/lib/types';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 export function DashboardClient({ todaysLog }: { todaysLog: DailyLog | undefined}) {
   const { endDay, transactions } = useAppStore();
+  const [isEndDayDisabled, setIsEndDayDisabled] = useState(true);
+
+  useEffect(() => {
+    const checkTime = () => {
+      const currentHour = new Date().getHours();
+      // Enable the button only after 5 PM (17:00)
+      setIsEndDayDisabled(currentHour < 17); 
+    };
+    checkTime();
+    const interval = setInterval(checkTime, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
 
   const todaysTransactions = useMemo(() => {
     if (!todaysLog) return [];
@@ -57,6 +70,10 @@ export function DashboardClient({ todaysLog }: { todaysLog: DailyLog | undefined
     );
   }
 
+  const EndDayButton = (
+    <Button variant="destructive" disabled={isEndDayDisabled}>End Day</Button>
+  );
+
   return (
     <div className="max-w-6xl mx-auto">
         <div className="space-y-6 animate-fade-in">
@@ -65,9 +82,23 @@ export function DashboardClient({ todaysLog }: { todaysLog: DailyLog | undefined
               <h2 className="text-3xl font-bold font-headline tracking-tight">Today's Summary</h2>
             </div>
             <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <Button variant="destructive">End Day</Button>
-            </AlertDialogTrigger>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div tabIndex={isEndDayDisabled ? 0 : -1}>
+                                <AlertDialogTrigger asChild>
+                                    {EndDayButton}
+                                </AlertDialogTrigger>
+                            </div>
+                        </TooltipTrigger>
+                        {isEndDayDisabled && (
+                             <TooltipContent>
+                                <p>You can end the day after 5 PM.</p>
+                            </TooltipContent>
+                        )}
+                    </Tooltip>
+                </TooltipProvider>
+            
             <AlertDialogContent>
                 <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure you want to end the day?</AlertDialogTitle>
