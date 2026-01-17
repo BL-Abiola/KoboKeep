@@ -2,8 +2,8 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, List, BookUser, BarChart3, Settings, Wallet, PlusCircle } from 'lucide-react';
-import { SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
+import { Home, List, BookUser, BarChart3, Settings, Wallet, PlusCircle, Info } from 'lucide-react';
+import { SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/lib/store';
 
@@ -15,7 +15,7 @@ const navItems = [
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
-export function SidebarNav() {
+export function SidebarNav({ onAboutClick }: { onAboutClick: () => void }) {
   const pathname = usePathname();
   const { toggleTransactionSheet } = useAppStore();
 
@@ -49,6 +49,12 @@ export function SidebarNav() {
           ))}
         </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenuButton onClick={onAboutClick}>
+          <Info />
+          <span>About</span>
+        </SidebarMenuButton>
+      </SidebarFooter>
     </>
   );
 }

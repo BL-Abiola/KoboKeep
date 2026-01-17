@@ -9,7 +9,7 @@ import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { TransactionForm } from '@/components/transactions/transaction-form';
 import { useAppStore } from '@/lib/store';
 import { Button } from '../ui/button';
-import { Settings, User } from 'lucide-react';
+import { Info, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { AboutDialog } from './about-dialog';
@@ -17,11 +17,12 @@ import { AboutDialog } from './about-dialog';
 export function MainLayout({ children, title }: { children: React.ReactNode; title: string }) {
   const isMobile = useIsMobile();
   const { settings } = useAppStore();
+  const [isAboutOpen, setAboutOpen] = useState(false);
 
   const renderDesktopLayout = () => (
     <SidebarProvider>
       <Sidebar>
-        <SidebarNav />
+        <SidebarNav onAboutClick={() => setAboutOpen(true)} />
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-auto items-center justify-between gap-4 border-b bg-background px-4 py-4 sm:static sm:border-0 sm:bg-transparent sm:px-6">
@@ -38,6 +39,7 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
         <main className="flex-1">{children}</main>
       </SidebarInset>
       <TransactionForm />
+      <AboutDialog open={isAboutOpen} onOpenChange={setAboutOpen} />
     </SidebarProvider>
   );
 
@@ -58,6 +60,10 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => setAboutOpen(true)}>
+              <Info className="h-6 w-6" />
+              <span className="sr-only">About</span>
+            </Button>
             <Link href="/settings" passHref>
               <Button variant="ghost" size="icon">
                 <Settings className="h-6 w-6" />
@@ -69,6 +75,7 @@ export function MainLayout({ children, title }: { children: React.ReactNode; tit
       <main className="flex-1 pb-20">{children}</main>
       <BottomNav />
       <TransactionForm />
+      <AboutDialog open={isAboutOpen} onOpenChange={setAboutOpen} />
     </div>
   );
   

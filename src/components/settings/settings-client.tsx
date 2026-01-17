@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -80,54 +79,6 @@ function AppearanceSettings() {
                     ))}
                 </SelectContent>
             </Select>
-        </div>
-        <Separator />
-         <div className="space-y-4 pt-2">
-            <h3 className="text-lg font-medium">About KoboKeep</h3>
-            <div className="space-y-4 text-sm text-foreground">
-                <div>
-                    <h4 className="font-semibold">Purpose</h4>
-                    <p className="text-muted-foreground">
-                    A simple bookkeeping app that helps small business owners track sales, expenses, and debts.
-                    </p>
-                </div>
-                <div>
-                    <h4 className="font-semibold">Built with</h4>
-                    <p className="text-muted-foreground">
-                    Next.js, React, ShadCN, and Tailwind CSS.
-                    </p>
-                </div>
-                <div>
-                    <h4 className="font-semibold">Developer</h4>
-                    <p className="text-muted-foreground">Your Name</p>
-                </div>
-                 <div>
-                    <h4 className="font-semibold">Contact</h4>
-                    <div className="flex gap-2 pt-1">
-                        <Button variant="outline" asChild size="sm">
-                            <Link href="https://twitter.com/yourhandle" target="_blank">
-                                <Twitter className="mr-2 h-4 w-4" />
-                                Twitter
-                            </Link>
-                        </Button>
-                        <Button variant="outline" asChild size="sm">
-                            <Link href="mailto:youremail@example.com">
-                                <Mail className="mr-2 h-4 w-4" />
-                                Email
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-                <div>
-                    <h4 className="font-semibold">Source Code</h4>
-                    <Button variant="outline" asChild>
-                    <Link href="https://github.com/your-username/your-repo" target="_blank">
-                        <Github className="mr-2 h-4 w-4" />
-                        GitHub
-                    </Link>
-                    </Button>
-                </div>
-            </div>
         </div>
     </div>
     );
