@@ -24,9 +24,9 @@ export function ThemeSwitcher() {
 
   return (
     <Tabs value={theme} onValueChange={setTheme} className="max-w-sm">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="flex w-full">
         {themes.map((t) => (
-          <TabsTrigger key={t.name} value={t.name}>
+          <TabsTrigger key={t.name} value={t.name} className="flex-1">
             <t.icon className="mr-2 h-4 w-4" />
             {t.label}
           </TabsTrigger>

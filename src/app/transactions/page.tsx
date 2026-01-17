@@ -36,10 +36,10 @@ export default function TransactionsPage() {
                 <WeekNavigator selectedDate={selectedDate} onDateChange={setSelectedDate} />
                 
                 <Tabs defaultValue="all" onValueChange={setFilter} className="w-full">
-                    <TabsList className="grid w-full grid-cols-3">
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="income">Income</TabsTrigger>
-                        <TabsTrigger value="expense">Expenses</TabsTrigger>
+                    <TabsList className="flex w-full">
+                        <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
+                        <TabsTrigger value="income" className="flex-1">Income</TabsTrigger>
+                        <TabsTrigger value="expense" className="flex-1">Expenses</TabsTrigger>
                     </TabsList>
                 </Tabs>
 

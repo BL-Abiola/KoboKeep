@@ -180,11 +180,11 @@ function AboutSection() {
 export function SettingsClient() {
   return (
      <Tabs defaultValue="profile" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="profile">Profile</TabsTrigger>
-        <TabsTrigger value="appearance">Appearance</TabsTrigger>
-        <TabsTrigger value="about">About</TabsTrigger>
-        <TabsTrigger value="data">Data</TabsTrigger>
+      <TabsList className="flex w-full">
+        <TabsTrigger value="profile" className="flex-1">Profile</TabsTrigger>
+        <TabsTrigger value="appearance" className="flex-1">Appearance</TabsTrigger>
+        <TabsTrigger value="about" className="flex-1">About</TabsTrigger>
+        <TabsTrigger value="data" className="flex-1">Data</TabsTrigger>
       </TabsList>
       
       <TabsContent value="profile">
