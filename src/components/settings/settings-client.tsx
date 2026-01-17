@@ -14,7 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { CURRENCIES } from '@/lib/constants';
 import { ThemeSwitcher } from './theme-switcher';
 import { Label } from '../ui/label';
-import { Github, Mail, Twitter } from 'lucide-react';
+import { Mail, Twitter } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -150,7 +150,7 @@ function AboutSection() {
                     <h3 className="font-semibold">Contact</h3>
                     <div className="flex gap-2 pt-1">
                         <Button variant="outline" asChild size="sm">
-                            <Link href="https://twitter.com/yourhandle" target="_blank">
+                            <Link href="https://x.com/BL_Abiola" target="_blank">
                                 <Twitter className="mr-2 h-4 w-4" />
                                 Twitter
                             </Link>
