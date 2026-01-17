@@ -23,7 +23,7 @@ export const generateDailyLogReport = (
   doc.text(`Daily Log Report - ${format(new Date(log.date), 'MMMM dd, yyyy')}`, 14, 22);
 
   doc.setFontSize(12);
-  doc.text(`Business: ${settings.profile.businessName}`, 14, 32);
+  doc.text(`Workspace: ${settings.profile.workspaceName}`, 14, 32);
   doc.text(`Status: ${log.status}`, 14, 38);
 
   const profit = log.totalIncome - log.totalExpenses;

@@ -25,7 +25,7 @@ import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   type: z.enum(['income', 'expense']),
-  amount: z.coerce.number().min(0.01, 'Amount must be greater than 0.').optional().or(z.literal('')),
+  amount: z.coerce.number().min(0.01, 'Amount must be greater than 0.'),
   paymentMethod: z.enum(['cash', 'card', 'transfer']),
   description: z.string().min(1, 'Description is required.').max(100),
 });
@@ -39,7 +39,7 @@ function TransactionFormContent() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: 'income',
-      amount: '',
+      amount: undefined,
       paymentMethod: 'cash',
       description: '',
     },
@@ -56,7 +56,7 @@ function TransactionFormContent() {
     } else {
       form.reset({
         type: 'income',
-        amount: '',
+        amount: undefined,
         paymentMethod: 'cash',
         description: '',
       });
@@ -165,7 +165,7 @@ function TransactionFormContent() {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Sale of 2x T-shirts" {...field} />
+                      <Input placeholder="e.g. Payment for design work" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

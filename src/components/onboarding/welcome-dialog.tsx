@@ -16,7 +16,7 @@ import { Progress } from '../ui/progress';
 
 const onboardingSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  businessName: z.string().min(1, 'Business name is required'),
+  workspaceName: z.string().min(1, 'Workspace name is required'),
   currency: z.string().min(1, "Currency is required"),
 });
 
@@ -26,7 +26,7 @@ const steps = [
   {
     title: "Welcome to KoboKeep!",
     description: "Let's get your profile set up.",
-    fields: ['name', 'businessName', 'currency'],
+    fields: ['name', 'workspaceName', 'currency'],
   },
 ];
 
@@ -38,7 +38,7 @@ export function WelcomeDialog() {
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
       name: settings.profile.name === 'User' ? '' : settings.profile.name,
-      businessName: settings.profile.businessName === 'My Business' ? '' : settings.profile.businessName,
+      workspaceName: settings.profile.workspaceName === 'My Workspace' ? '' : settings.profile.workspaceName,
       currency: settings.currency,
     },
   });
@@ -47,7 +47,7 @@ export function WelcomeDialog() {
     updateSettings({
       profile: {
         name: values.name,
-        businessName: values.businessName,
+        workspaceName: values.workspaceName,
       },
       currency: values.currency,
       onboardingCompleted: true,
@@ -80,10 +80,10 @@ export function WelcomeDialog() {
                     <FormMessage />
                   </FormItem>
                 )} />
-                <FormField control={form.control} name="businessName" render={({ field }) => (
+                <FormField control={form.control} name="workspaceName" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Business Name</FormLabel>
-                    <FormControl><Input placeholder="e.g. John's Coffee Shop" {...field} /></FormControl>
+                    <FormLabel>Workspace Name</FormLabel>
+                    <FormControl><Input placeholder="e.g. Personal Projects" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />

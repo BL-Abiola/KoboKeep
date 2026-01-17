@@ -31,7 +31,7 @@ export const generateWeeklyReport = (
   doc.setFontSize(20);
   doc.text(`Weekly Report: ${format(week.startDate, 'MMM d')} - ${format(week.endDate, 'd, yyyy')}`, 14, 22);
   doc.setFontSize(12);
-  doc.text(`Business: ${settings.profile.businessName}`, 14, 32);
+  doc.text(`Workspace: ${settings.profile.workspaceName}`, 14, 32);
 
   const summaryData = [
     ['Total Income', formatCurrency(week.totalIncome)],

@@ -37,7 +37,7 @@ export type Debt = {
 
 export type ProfileSettings = {
   name: string;
-  businessName: string;
+  workspaceName: string;
 };
 
 export type Settings = {

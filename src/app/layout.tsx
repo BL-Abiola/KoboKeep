@@ -19,7 +19,7 @@ const fontHeadline = Poppins({
 
 export const metadata: Metadata = {
   title: 'KoboKeep',
-  description: 'Your personal finance manager.',
+  description: 'A simple app for logging income and expenses.',
 };
 
 export default function RootLayout({

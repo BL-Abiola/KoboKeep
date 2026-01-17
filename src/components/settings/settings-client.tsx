@@ -20,7 +20,7 @@ import Link from 'next/link';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  businessName: z.string().min(1, 'Business name is required'),
+  workspaceName: z.string().min(1, 'Workspace name is required'),
 });
 
 function ProfileSettings() {
@@ -43,7 +43,7 @@ function ProfileSettings() {
                 <FormField control={form.control} name="name" render={({ field }) => ( <FormItem><FormLabel>Your Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
             </div>
             <div className="max-w-sm">
-                <FormField control={form.control} name="businessName" render={({ field }) => ( <FormItem><FormLabel>Business Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                <FormField control={form.control} name="workspaceName" render={({ field }) => ( <FormItem><FormLabel>Workspace Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )}/>
             </div>
             <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
         </form>
@@ -127,13 +127,13 @@ function AboutSection() {
         <Card>
             <CardHeader>
                 <CardTitle className="text-2xl font-headline">About KoboKeep</CardTitle>
-                <CardDescription>A simple bookkeeping app for small businesses.</CardDescription>
+                <CardDescription>A simple income and expense logger.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-2 text-sm text-foreground">
                 <div>
                     <h3 className="font-semibold">Purpose</h3>
                     <p className="text-muted-foreground">
-                    A simple bookkeeping app that helps small business owners track sales, expenses, and debts.
+                    A simple app that helps you log income, expenses, and track debts.
                     </p>
                 </div>
                 <div>
@@ -190,7 +190,7 @@ export function SettingsClient() {
             <Card>
                 <CardHeader>
                     <CardTitle>Profile</CardTitle>
-                    <CardDescription>Manage your personal and business information.</CardDescription>
+                    <CardDescription>Manage your personal and workspace information.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ProfileSettings />

@@ -15,7 +15,7 @@ const initialState: AppState = {
   settings: {
     profile: {
       name: 'User',
-      businessName: 'My Business',
+      workspaceName: 'My Workspace',
     },
     currency: 'USD',
     baseCurrency: 'USD',
@@ -53,6 +53,13 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       const storedState = localStorage.getItem(APP_STORAGE_KEY);
       if (storedState) {
         const parsedState = JSON.parse(storedState);
+        
+        // Migration for businessName -> workspaceName
+        if (parsedState.settings?.profile?.businessName) {
+            parsedState.settings.profile.workspaceName = parsedState.settings.profile.businessName;
+            delete parsedState.settings.profile.businessName;
+        }
+
         const mergedState = { 
           ...initialState, 
           ...parsedState, 
@@ -99,7 +106,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     const todayId = format(new Date(), 'yyyy-MM-dd');
     
     setState(prev => {
-        if (prev.dailyLogs.some(log => log.id === todayId)) {
+        if (getTodaysLog(prev)) {
+          console.warn("A log for today is already open.");
           return prev;
         }
         const newLog: DailyLog = {
@@ -271,7 +279,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const updateSettings = (newSettings: Partial<Settings>) => {
     setState(prev => {
         const oldSettings = prev.settings;
-        const updatedSettings = { ...oldSettings, ...newSettings };
+        const updatedSettings = { ...oldSettings, ...newSettings, profile: { ...oldSettings.profile, ...newSettings.profile }};
 
         if (newSettings.currency && newSettings.currency !== oldSettings.currency) {
             const rate = getExchangeRate(oldSettings.currency, newSettings.currency);
@@ -310,7 +318,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
             }
         }
         
-        return { ...prev, settings: { ...prev.settings, ...newSettings } };
+        return { ...prev, settings: updatedSettings };
     });
 };
 
