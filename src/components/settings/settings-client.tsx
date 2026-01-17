@@ -137,12 +137,6 @@ function AboutSection() {
                     </p>
                 </div>
                 <div>
-                    <h3 className="font-semibold">Built with</h3>
-                    <p className="text-muted-foreground">
-                    Next.js, React, ShadCN, and Tailwind CSS.
-                    </p>
-                </div>
-                <div>
                     <h3 className="font-semibold">Developer</h3>
                     <p className="text-muted-foreground">BL_Abiola</p>
                 </div>
