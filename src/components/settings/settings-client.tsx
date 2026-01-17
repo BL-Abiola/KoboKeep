@@ -16,6 +16,7 @@ import { ThemeSwitcher } from './theme-switcher';
 import { Label } from '../ui/label';
 import { Github, Mail, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -178,27 +179,45 @@ function AboutSection() {
 
 export function SettingsClient() {
   return (
-    <div className="space-y-6">
+     <Tabs defaultValue="profile" className="w-full">
+      <TabsList className="grid w-full grid-cols-4">
+        <TabsTrigger value="profile">Profile</TabsTrigger>
+        <TabsTrigger value="appearance">Appearance</TabsTrigger>
+        <TabsTrigger value="about">About</TabsTrigger>
+        <TabsTrigger value="data">Data</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="profile">
         <Card>
-            <CardHeader>
-                <CardTitle>Profile</CardTitle>
-                <CardDescription>Manage your personal and workspace information.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <ProfileSettings />
-            </CardContent>
+          <CardHeader>
+            <CardTitle>Profile</CardTitle>
+            <CardDescription>Manage your personal and workspace information.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ProfileSettings />
+          </CardContent>
         </Card>
+      </TabsContent>
+
+      <TabsContent value="appearance">
         <Card>
-            <CardHeader>
-                <CardTitle>Appearance</CardTitle>
-                <CardDescription>Customize the look and feel of the app.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <AppearanceSettings />
-            </CardContent>
+          <CardHeader>
+            <CardTitle>Appearance</CardTitle>
+            <CardDescription>Customize the look and feel of the app.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AppearanceSettings />
+          </CardContent>
         </Card>
+      </TabsContent>
+
+      <TabsContent value="about">
         <AboutSection />
+      </TabsContent>
+
+      <TabsContent value="data">
         <DataSettings />
-    </div>
+      </TabsContent>
+    </Tabs>
   );
 }
