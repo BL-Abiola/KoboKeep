@@ -183,8 +183,8 @@ export function SettingsClient() {
         <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="appearance">Appearance</TabsTrigger>
-            <TabsTrigger value="data">Data</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
+            <TabsTrigger value="data">Data</TabsTrigger>
         </TabsList>
         <TabsContent value="profile">
             <Card>
@@ -208,11 +208,11 @@ export function SettingsClient() {
                 </CardContent>
             </Card>
         </TabsContent>
-        <TabsContent value="data">
-             <DataSettings />
-        </TabsContent>
         <TabsContent value="about">
             <AboutSection />
+        </TabsContent>
+        <TabsContent value="data">
+             <DataSettings />
         </TabsContent>
     </Tabs>
   );
