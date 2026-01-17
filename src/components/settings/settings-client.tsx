@@ -163,15 +163,6 @@ function AboutSection() {
                         </Button>
                     </div>
                 </div>
-                <div>
-                    <h3 className="font-semibold">Source Code</h3>
-                    <Button variant="outline" asChild>
-                    <Link href="https://github.com/your-username/your-repo" target="_blank">
-                        <Github className="mr-2 h-4 w-4" />
-                        GitHub
-                    </Link>
-                    </Button>
-                </div>
             </CardContent>
         </Card>
     )
