@@ -144,7 +144,7 @@ function AboutSection() {
                 </div>
                 <div>
                     <h3 className="font-semibold">Developer</h3>
-                    <p className="text-muted-foreground">Your Name</p>
+                    <p className="text-muted-foreground">BL_Abiola</p>
                 </div>
                 <div>
                     <h3 className="font-semibold">Contact</h3>
