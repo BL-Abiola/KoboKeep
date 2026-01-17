@@ -156,7 +156,7 @@ function AboutSection() {
                             </Link>
                         </Button>
                         <Button variant="outline" asChild size="sm">
-                            <Link href="mailto:youremail@example.com">
+                            <Link href="mailto:abiolalabs29@gmail.com">
                                 <Mail className="mr-2 h-4 w-4" />
                                 Email
                             </Link>
